@@ -1,13 +1,13 @@
 
 import 'phaser';
-import Test from './test.js';
-import { Tilemaps, Tweens } from 'phaser';
+import Boot from './boot.js'
+
 
 var config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
-    height: 600,
+    width: 480,
+    height: 320,
     scene: {
         preload: preload,
         create: create
@@ -16,23 +16,18 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-function preload ()
+
+function preload()
 {
-    this.load.image('logo', 'assets/logo.png');
 }
 
-function create ()
+function create()
 {
-    var logo = this.add.image(400, 150, 'logo');
-
-    this.tweens.add({
-        targets: logo,
-        y: 450,
-        duration: 2000,
-        ease: 'Power2',
-        yoyo: true,
-        loop: -1
-    });
-    // var test = new Test();
-    // test.hello();
 }
+
+function update()
+{
+}
+
+
+
