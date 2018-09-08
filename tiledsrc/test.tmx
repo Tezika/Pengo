@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="snowWIP" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="snowWIP.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="257" name="coin" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+ <tileset firstgid="257" name="coin" tilewidth="32" tileheight="32" tilecount="0" columns="6">
   <image source="../../phaser-examples-master/examples/assets/sprites/coin.png" width="192" height="32"/>
  </tileset>
  <layer name="background" width="15" height="10">
@@ -18,6 +18,20 @@
 18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
 18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
 65,68,68,68,68,68,68,68,68,68,68,68,68,68,54
+</data>
+ </layer>
+ <layer name="Walls" width="15" height="10">
+  <data encoding="csv">
+0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
+0,68,68,68,68,68,68,68,68,68,68,68,68,68,0
 </data>
  </layer>
  <objectgroup name="blocks">
