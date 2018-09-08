@@ -51,11 +51,14 @@ function create()
     layer = map.createStaticLayer('background', tiles);
     wallLayer = map.createDynamicLayer('Walls', tiles);
 
-    wallLayer.setCollision([3,33,38,68,117]);
+    wallLayer.setCollision([3,33,38,68]);
+    wallLayer.setTileIndexCallback(117, collHandler, this);
 
     player = this.physics.add.sprite(0, 0, 'player');
     player.x = map.tileToWorldX(1)+16;
     player.y = map.tileToWorldY(1)+16;
+
+    this.physics.add.collider(player, wallLayer);
 
     //  //  Here we create our coins group
     //  blocks = game.add.group();
@@ -65,6 +68,12 @@ function create()
     //  map.createFromObjects('blocks', 116, null, null);
     
     cursors = this.input.keyboard.createCursorKeys();
+}
+
+function collHandler(player, wallLayer)
+{
+    console.log(player + "   " + wallLayer);
+    return true;
 }
 
 function update(time, delta)
