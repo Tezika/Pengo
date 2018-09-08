@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="32" tileheight="32" infinite="0" nextobjectid="4">
- <tileset firstgid="1" source="snow.tsx"/>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="32" tileheight="32" infinite="0" nextobjectid="44">
  <tileset firstgid="1" name="snowWIP" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="snowWIP.png" width="512" height="512"/>
  </tileset>
+ <tileset firstgid="257" name="coin" tilewidth="32" tileheight="32" tilecount="6" columns="6">
+  <image source="../../phaser-examples-master/examples/assets/sprites/coin.png" width="192" height="32"/>
+ </tileset>
  <layer name="background" width="15" height="10">
   <data encoding="csv">
-18,34,34,34,34,34,34,34,34,34,34,34,34,34,5,
-34,34,117,34,117,34,34,117,117,117,117,117,34,34,21,
-34,34,117,34,117,34,34,117,117,117,34,34,117,34,21,
-34,34,117,34,117,34,34,34,34,117,34,34,117,34,21,
-34,34,117,34,117,117,34,34,34,117,34,34,117,34,21,
-34,34,117,34,34,117,34,34,34,117,34,34,117,34,21,
-34,34,117,34,34,117,34,34,34,117,34,34,117,34,21,
-34,34,117,34,34,117,117,34,34,117,34,34,117,117,21,
-34,117,117,34,34,34,117,34,34,117,34,34,34,34,21,
+2,4,4,4,4,4,4,4,4,4,4,4,4,4,5,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
+18,36,36,36,36,36,36,36,36,36,36,36,36,36,38,
 65,68,68,68,68,68,68,68,68,68,68,68,68,68,54
 </data>
  </layer>
- <objectgroup name="player">
+ <objectgroup name="blocks">
   <properties>
-   <property name="type" value="player"/>
+   <property name="type" value="block"/>
   </properties>
-  <object id="2" gid="1" x="246" y="308" width="32" height="32"/>
-  <object id="3" x="-38" y="-33" width="540" height="360"/>
+  <object id="36" x="63" y="61" width="34" height="35"/>
+  <object id="38" x="63" y="95" width="33" height="33"/>
+  <object id="39" x="64" y="127" width="33" height="34"/>
+  <object id="40" x="97" y="99" width="30" height="29"/>
+  <object id="41" x="125" y="99" width="34" height="29"/>
  </objectgroup>
 </map>

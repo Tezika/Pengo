@@ -2,7 +2,7 @@
  "infinite":false,
  "layers":[
         {
-         "data":[18, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 34, 5, 34, 34, 117, 34, 117, 34, 34, 117, 117, 117, 117, 117, 34, 34, 21, 34, 34, 117, 34, 117, 34, 34, 117, 117, 117, 34, 34, 117, 34, 21, 34, 34, 117, 34, 117, 34, 34, 34, 34, 117, 34, 34, 117, 34, 21, 34, 34, 117, 34, 117, 117, 34, 34, 34, 117, 34, 34, 117, 34, 21, 34, 34, 117, 34, 34, 117, 34, 34, 34, 117, 34, 34, 117, 34, 21, 34, 34, 117, 34, 34, 117, 34, 34, 34, 117, 34, 34, 117, 34, 21, 34, 34, 117, 34, 34, 117, 117, 34, 34, 117, 34, 34, 117, 117, 21, 34, 117, 117, 34, 34, 34, 117, 34, 34, 117, 34, 34, 34, 34, 21, 65, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 54],
+         "data":[2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 18, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38, 65, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 54],
          "height":10,
          "name":"background",
          "opacity":1,
@@ -14,35 +14,67 @@
         }, 
         {
          "draworder":"topdown",
-         "name":"player",
+         "name":"blocks",
          "objects":[
                 {
-                 "gid":1,
-                 "height":32,
-                 "id":2,
+                 "height":35,
+                 "id":36,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32,
-                 "x":246,
-                 "y":308
+                 "width":34,
+                 "x":63,
+                 "y":61
                 }, 
                 {
-                 "height":360,
-                 "id":3,
+                 "height":33,
+                 "id":38,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":540,
-                 "x":-38,
-                 "y":-33
+                 "width":33,
+                 "x":63,
+                 "y":95
+                }, 
+                {
+                 "height":34,
+                 "id":39,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":33,
+                 "x":64,
+                 "y":127
+                }, 
+                {
+                 "height":29,
+                 "id":40,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":30,
+                 "x":97,
+                 "y":99
+                }, 
+                {
+                 "height":29,
+                 "id":41,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":34,
+                 "x":125,
+                 "y":99
                 }],
          "opacity":1,
          "properties":
             {
-             "type":"player"
+             "type":"block"
             },
          "propertytypes":
             {
@@ -53,26 +85,35 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":4,
+ "nextobjectid":44,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.6",
  "tileheight":32,
  "tilesets":[
         {
-         "firstgid":1,
-         "source":"..\/..\/..\/Tiled\/snow.tsx"
-        }, 
-        {
          "columns":16,
          "firstgid":1,
-         "image":"..\/..\/..\/Tiled\/snowWIP.png",
+         "image":"..\/..\/tiledsrc\/snowWIP.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
          "name":"snowWIP",
          "spacing":0,
          "tilecount":256,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":6,
+         "firstgid":257,
+         "image":"..\/..\/..\/phaser-examples-master\/examples\/assets\/sprites\/coin.png",
+         "imageheight":32,
+         "imagewidth":192,
+         "margin":0,
+         "name":"coin",
+         "spacing":0,
+         "tilecount":6,
          "tileheight":32,
          "tilewidth":32
         }],

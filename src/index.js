@@ -1,6 +1,5 @@
 
 import 'phaser';
-import Boot from './boot.js'
 
 
 var config = {
@@ -16,6 +15,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 var titlesetName = 'snowWIP';
+var blocks;
 
 function preload()
 {
@@ -35,10 +35,18 @@ function create()
     // You can load a layer from the map using the layer name from Tiled, or by using the layer
     // index (0 in this case).
     var layer = map.createStaticLayer('background', tiles, 0, 0);
+
+    //  //  Here we create our coins group
+    //  blocks = game.add.group();
+    //  blocks.enableBody = true;
+ 
+    //  //  And now we convert all of the Tiled objects with an ID of 34 into sprites within the coins group
+    //  map.createFromObjects('blocks', 116, null, null);
 }
 
 function update()
 {
+
 }
 
 
