@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="32" tileheight="32" infinite="0" nextobjectid="4">
+ <tileset firstgid="1" source="snow.tsx"/>
+ <tileset firstgid="1" name="snowWIP" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="snowWIP.png" width="512" height="512"/>
+ </tileset>
+ <layer name="background" width="15" height="10">
+  <data encoding="csv">
+18,34,34,34,34,34,34,34,34,34,34,34,34,34,5,
+34,34,117,34,117,34,34,117,117,117,117,117,34,34,21,
+34,34,117,34,117,34,34,117,117,117,34,34,117,34,21,
+34,34,117,34,117,34,34,34,34,117,34,34,117,34,21,
+34,34,117,34,117,117,34,34,34,117,34,34,117,34,21,
+34,34,117,34,34,117,34,34,34,117,34,34,117,34,21,
+34,34,117,34,34,117,34,34,34,117,34,34,117,34,21,
+34,34,117,34,34,117,117,34,34,117,34,34,117,117,21,
+34,117,117,34,34,34,117,34,34,117,34,34,34,34,21,
+65,68,68,68,68,68,68,68,68,68,68,68,68,68,54
+</data>
+ </layer>
+ <objectgroup name="player">
+  <properties>
+   <property name="type" value="player"/>
+  </properties>
+  <object id="2" gid="1" x="246" y="308" width="32" height="32"/>
+  <object id="3" x="-38" y="-33" width="540" height="360"/>
+ </objectgroup>
+</map>
