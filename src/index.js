@@ -1,4 +1,6 @@
-import 'phaser'
+import 'phaser';
+import GameScene from './game.js'
+
 
 var config = {
     type: Phaser.WEBGL,
@@ -6,192 +8,19 @@ var config = {
     height: 600,
     backgroundColor: '#000000',
     parent: 'phaser-example',
-    pixelArt: true,
+    width: 480,
+    height: 320,
     physics: {
         default: 'arcade',
-        arcade: { gravity: { y: 0 } }
+        arcade: {
+            debug: true,
+            gravity: { y: 0 }
+        }
     },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
+    scene:GameScene
 };
 
 var game = new Phaser.Game(config);
-var groundLayer;
-var objectLayer;
-var map;
-var player;
-var lastMoveTime = 0;
-var cursors;
-var debugGraphics;
 
-function preload ()
-{
-    // Credits! Michele "Buch" Bucelli (tilset artist) & Abram Connelly (tileset sponser)
-    // https://opengameart.org/content/top-down-dungeon-tileset
-    this.load.image('tiles', 'assets/tilemap/dungeon-base-sheet.png');
-}
 
-function create ()
-{
-    // Creating a blank tilemap with the specified dimensions
-    map = this.make.tilemap({ tileWidth: 16, tileHeight: 16, width: 23, height: 17 });
 
-    var tiles = map.addTilesetImage('tiles');
-
-    groundLayer = map.createBlankDynamicLayer('Ground Layer', tiles);
-    objectLayer = map.createBlankDynamicLayer('Object Layer', tiles);
-    groundLayer.setScale(2);
-    objectLayer.setScale(2);
-    this.cameras.main.setScroll(-27, -27);
-
-    // Walls & corners of the room
-    groundLayer.fill(39, 0, 0, map.width, 1);
-    groundLayer.fill(1, 0, map.height - 1, map.width, 1);
-    groundLayer.fill(21, 0, 0, 1, map.height);
-    groundLayer.fill(19, map.width - 1, 0, 1, map.height);
-    groundLayer.putTileAt(3, 0, 0);
-    groundLayer.putTileAt(4, map.width - 1, 0);
-    groundLayer.putTileAt(23, map.width - 1, map.height - 1);
-    groundLayer.putTileAt(22, 0, map.height - 1);
-
-    randomizeRoom(); // Initial randomization
-    this.input.on('pointerdown', randomizeRoom);
-
-    //for help
-    var help = this.add.text(16, 16, 'Click to re-randomize.', {
-        fontSize: '18px',
-        padding: { x: 10, y: 5 },
-        backgroundColor: '#ffffff',
-        fill: '#000000'
-    });
-
-    help.setScrollFactor(0);
-    player = this.physics.add.sprite(0,0,'');
-    player.x = map.tileToWorldX(player.x + 1);
-    player.y = map.tileToWorldY(player.y + 1);
-    cursors = this.input.keyboard.createCursorKeys();
-  
-    //Physics
-    // this.physics.add.collider(player, objectLayer);
-    objectLayer.setCollisionByExclusion([-1]);
-    this.physics.world.bounds.width = objectLayer.width;
-    this.physics.world.bounds.height = objectLayer.height;
-    player.setCollideWorldBounds(true); 
-    //Debug
-    debugGraphics = this.add.graphics();
-    drawDebug();
-}
-
-function updatePlayerMovement (time)
-{
-    var tw = map.tileWidth * objectLayer.scaleX;
-    var th = map.tileHeight * objectLayer.scaleY;
-    var repeatMoveDelay = 100;
-    // console.log("update");
-
-    if (time > lastMoveTime + repeatMoveDelay) {
-        if (cursors.down.isDown)
-        {
-            console.log("down");
-            if (isTileOpenAt(player.x, player.y + th))
-            {
-                console.log("move down");
-                player.y += th;
-                lastMoveTime = time;
-            }
-        }
-        else if (cursors.up.isDown)
-        {
-            console.log("up");
-            if (isTileOpenAt(player.x, player.y - th))
-            {
-                console.log("move up");
-                player.y -= th;
-                lastMoveTime = time;
-            }
-        }
-
-        if (cursors.left.isDown)
-        {
-            if (isTileOpenAt(player.x - tw, player.y))
-            {
-                player.x -= tw;
-                lastMoveTime = time;
-            }
-        }
-        else if (cursors.right.isDown)
-        {
-            if (isTileOpenAt(player.x + tw, player.y))
-            {
-                player.x += tw;
-                lastMoveTime = time;
-            }
-        }
-    }
-}
-
-function randomizeRoom ()
-{
-    // Fill the floor with random ground tiles
-    groundLayer.weightedRandomize(1, 1, map.width - 2, map.height - 2, [
-        { index: 6, weight: 4 }, // Regular floor tile (4x more likely)
-        { index: 7, weight: 1 }, // Tile variation with 1 rock
-        { index: 8, weight: 1 }, // Tile variation with 1 rock
-        { index: 26, weight: 1 } // Tile variation with 1 rock
-    ]);
-
-    // Fill the floor of the room with random, weighted tiles
-    objectLayer.weightedRandomize(1, 1, map.width - 2, map.height - 2, [
-        { index: -1, weight: 50 }, // Place an empty tile most of the tile
-        { index: 13, weight: 3 }, // Empty pot
-        { index: 32, weight: 2 }, // Full pot
-        { index: 127, weight: 1 }, // Open crate
-        { index: 108, weight: 1 }, // Empty crate
-        { index: 109, weight: 2 }, // Open barrel
-        { index: 110, weight: 2 }, // Empty barrel
-        { index: 166, weight: 0.25 }, // Chest
-        { index: 167, weight: 0.25 } // Trap door
-    ]);
-}
-
-function update(time, delta)
-{
-    updatePlayerMovement(time);
-    var playerTileX = map.worldToTileX(player.x);
-    var playerTileY = map.worldToTileY(player.y);
-}
-
-function isTileOpenAt (worldX, worldY)
-{
-    // nonNull = true, don't return null for empty tiles. This means null will be returned only for
-    // tiles outside of the bounds of the map.
-    // var tile = map.getTileAtWorldXY(worldX, worldY, true);
-
-    // if (tile && !tile.collides)
-    // {
-    //     return true;
-    // }
-    // else
-    // {
-    //     return false;
-    // }
-    return true;
-}
-
-function drawDebug()
-{
-    groundLayer.renderDebug(debugGraphics, {
-        tileColor: null, // Non-colliding tiles
-        collidingTileColor: new Phaser.Display.Color(211, 36, 255, 100), // Colliding tiles
-        faceColor: new Phaser.Display.Color(211, 36, 255, 255) // Colliding face edges
-    });
-
-    objectLayer.renderDebug(debugGraphics, {
-        tileColor: null, // Non-colliding tiles
-        collidingTileColor: new Phaser.Display.Color(244, 255, 36, 100), // Colliding tiles
-        faceColor: new Phaser.Display.Color(244, 255, 36, 255) // Colliding face edges
-    });
-}
