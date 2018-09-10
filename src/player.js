@@ -7,6 +7,7 @@ export default class Player
         this.scene = scene;
         this.sprite = scene.physics.add.sprite(x, y, "player", 0);
         this.cursors = scene.input.keyboard.createCursorKeys();
+        this.scene.physics.add.collider(this.sprite, this.backgroundLayer);
         this.lastMoveTime = 0;
     }
 
