@@ -3,9 +3,6 @@
  <tileset firstgid="1" name="snowWIP" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="snowWIP.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="257" name="coin" tilewidth="32" tileheight="32" tilecount="0" columns="6">
-  <image source="../../phaser-examples-master/examples/assets/sprites/coin.png" width="192" height="32"/>
- </tileset>
  <layer name="background" width="15" height="10">
   <data encoding="csv">
 2,4,4,4,4,4,4,4,4,4,4,4,4,4,5,
@@ -20,28 +17,14 @@
 65,68,68,68,68,68,68,68,68,68,68,68,68,68,54
 </data>
  </layer>
- <layer name="Walls" width="15" height="10">
-  <data encoding="csv">
-0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-33,0,0,0,0,0,0,0,0,0,0,0,0,0,38,
-0,68,68,68,68,68,68,68,68,68,68,68,68,68,0
-</data>
- </layer>
  <objectgroup name="blocks">
   <properties>
    <property name="type" value="block"/>
   </properties>
-  <object id="36" x="63" y="61" width="34" height="35"/>
-  <object id="38" x="63" y="95" width="33" height="33"/>
-  <object id="39" x="64" y="127" width="33" height="34"/>
-  <object id="40" x="97" y="99" width="30" height="29"/>
-  <object id="41" x="125" y="99" width="34" height="29"/>
+  <object id="36" name="block" x="63" y="61" width="32" height="32"/>
+  <object id="38" name="block" x="63" y="95" width="32" height="32"/>
+  <object id="39" name="block" x="64" y="127" width="32" height="32"/>
+  <object id="40" name="block" x="97" y="99" width="32" height="32"/>
+  <object id="41" name="block" x="125" y="99" width="32" height="29.32"/>
  </objectgroup>
 </map>
