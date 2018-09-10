@@ -36,7 +36,7 @@ function preload()
      //load the tile
      this.load.tilemapTiledJSON('map', 'assets/tilemap/test2.json');
      this.load.image('tiles','assets/tilemap/snowWIP.png');
-     this.load.image('player','assets/player.png');
+     this.load.image('player','assets/player.jpg');
 }
 
 function create()
@@ -55,6 +55,8 @@ function create()
     wallLayer.setTileIndexCallback(117, collHandler, this);
 
     player = this.physics.add.sprite(0, 0, 'player');
+    player.scaleX = .5;
+    player.scaleY = .5;
     player.x = map.tileToWorldX(1)+16;
     player.y = map.tileToWorldY(1)+16;
 
