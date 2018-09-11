@@ -18,6 +18,7 @@ export default class GameScene extends Phaser.Scene
         this.titlesetName = 'snowWIP';
 
         this.blockManager = new BlockManager(this);
+
     }
 
     create()
@@ -31,12 +32,15 @@ export default class GameScene extends Phaser.Scene
         // index (0 in this case).
         this.backgroundLayer = this.map.createDynamicLayer('background', tiles);
         this.backgroundLayer.setCollision([2, 4, 33,117]);
+
+        this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
+        this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
  
+        //create the player
         this.player = new Player(this, 0, 0);
         this.player.sprite.x = this.map.tileToWorldX(1)+16;
         this.player.sprite.y= this.map.tileToWorldY(1)+16;
         this.player.cursors = this.input.keyboard.createCursorKeys();
-
 
         //Blocks' setup 
         this.blockManager.create();
@@ -60,7 +64,12 @@ export default class GameScene extends Phaser.Scene
         {
             return false;
         }
-    }  
+    } 
+    
+    isBlockAt(WorldX, worldY)
+    {
+
+    }
 
     updateMap()
     {

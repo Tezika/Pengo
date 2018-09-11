@@ -10,8 +10,8 @@ export default class Block
         this.scene.physics.add.overlap(this.sprite, this.scene.backgroundLayer, this.colCallback);
     }
 
-    colCallback()
+    colCallback(obj1, obj2)
     {
-        console.log(callback);
+        console.log("hehehe");
     }
 }

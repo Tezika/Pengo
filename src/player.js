@@ -9,21 +9,24 @@ export default class Player
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.scene.physics.add.collider(this.sprite, this.backgroundLayer);
         this.lastMoveTime = 0;
+        this.lastPushTime = 0;
     }
 
     update(time)
     {
+        this.pushBlock(time);
         this.updateMovement(time);
     }
 
     updateMovement(time)
     {
-        var tw = this.scene.map.tileWidth * this.scene.backgroundLayer.scaleX;
-        var th = this.scene.map.tileHeight * this.scene.backgroundLayer.scaleY;
+        var tw = this.scene.tileWidth;
+        var th = this.scene.tileHeight;
         
         var repeatMoveDelay = 100;
     
-        if (time > this.lastMoveTime + repeatMoveDelay) {
+        if (time > this.lastMoveTime + repeatMoveDelay) 
+        {
             if (this.cursors.down.isDown)
             {
                 if (this.scene.isTileOpenAt(this.sprite.x, this.sprite.y + th))
@@ -57,6 +60,16 @@ export default class Player
                     this.lastMoveTime = time;
                 }
             }
+        }
+    }
+
+    pushBlock(time)
+    {
+        var repeatPushDelay = 100;
+        if (time > this.lastPushTime + repeatPushDelay) 
+        {
+            this.lastPushTime = time;
+
         }
     }
 }
