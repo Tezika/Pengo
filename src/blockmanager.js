@@ -34,4 +34,9 @@ export default class BlockManager
             block.update(time);
         });
     }
+
+    remove(block) {
+        const index = this.blocks.indexOf(block);
+        this.blocks.splice(index, 1);
+    }
 }

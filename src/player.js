@@ -1,5 +1,5 @@
-import 'phaser'
-import { Direction } from './block.js'
+import 'phaser';
+import { Direction } from './block.js';
 
 export default class Player
 {
@@ -112,18 +112,20 @@ export default class Player
                          break;
                 }
                 
-                console.log(dir);
-
-                if (!this.scene.isTileOpenAt(this.sprite.x + xmov, this.sprite.y + ymov))
-                {
-                    this.scene.blockManager.blocks.forEach(block => {
-                        if(this.sprite.x + xmov == block.sprite.x && this.sprite.y + ymov == block.sprite.y)
-                        {
-                      
-                            block.move(dir);
-                        }
-                    });
-                }
+                this.scene.blockManager.blocks.forEach(block => {
+                    if(this.sprite.x + xmov == block.sprite.x && this.sprite.y + ymov == block.sprite.y)
+                    {
+                       if(!this.scene.isTileOpenAt(block.sprite.x + xmov, block.sprite.y + ymov))
+                       {
+                            console.log("the block need be destroyed");
+                            block.destroy();
+                       }
+                       else
+                       {
+                            block.move(dir); 
+                       }
+                    }
+                });
                 this.lastPushTime = time;
             }    
         }

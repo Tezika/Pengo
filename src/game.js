@@ -59,7 +59,8 @@ export default class GameScene extends Phaser.Scene
         {
             var open = true;
             this.blockManager.blocks.forEach(block => {
-                if(worldX == block.sprite.x && worldY == block.sprite.y)
+                var blockTile = this.map.getTileAtWorldXY(block.sprite.x, block.sprite.y);
+                if(blockTile == tile)
                 {
                     open = false;
                 }
