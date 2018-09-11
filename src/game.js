@@ -1,6 +1,7 @@
 import 'phaser'
 import  Player from './player.js'
 import  BlockManager from './blockmanager.js'
+import Enemy from './enemy.js';
 
 export default class GameScene extends Phaser.Scene
 {
@@ -16,6 +17,7 @@ export default class GameScene extends Phaser.Scene
         this.load.image('tiles','assets/tilemap/snowWIP.png');
         this.load.image('player','assets/player.jpg');
         this.load.image('block','assets/block.png');
+        this.load.image('pengs', 'assets/pengs.png');
         this.titlesetName = 'snowWIP';
 
         this.blockManager = new BlockManager(this);
@@ -38,7 +40,8 @@ export default class GameScene extends Phaser.Scene
  
         //create the player
         this.player = new Player(this, 0, 0);
-        this.player.cursors = this.input.keyboard.createCursorKeys();
+
+        var enemy = new Enemy(this, 0, 0);
 
         //Blocks' setup 
         this.blockManager.create();
