@@ -52,7 +52,8 @@ export default class EnemyManager
         var sprtieY = this.scene.map.tileToWorldY(tile.y) + 16;
         var foundEnemy = null;
         this.enemies.forEach(enemy => {
-           if(enemy.sprite.x == spriteX && enemy.sprite.y == sprtieY)
+            //This is just a test factor.
+           if(Math.abs(enemy.sprite.x - spriteX) <= 2 * enemy.moveSpeed && Math.abs(enemy.sprite.y - sprtieY) <= 2 *enemy.moveSpeed)
            {
                 foundEnemy = enemy;
            } 
