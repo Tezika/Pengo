@@ -48,14 +48,10 @@ export default class GameScene extends Phaser.Scene
 
         //Blocks' setup 
         this.blockManager.create();
+
         //Enemy's setup
         this.enemyManager.create();
-        this.enemyManager.add(4, 2);
-        this.enemyManager.add(3, 2);
-        this.enemyManager.add(6, 2);
-        this.enemyManager.add(7, 2);
-        this.enemyManager.add(3, 8);
-        this.enemyManager.add(10, 3);
+
         
         this.wallSprites = [];
         this.wallParty = false;

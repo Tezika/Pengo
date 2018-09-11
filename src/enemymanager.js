@@ -17,6 +17,14 @@ export default class EnemyManager
     create()
     {
         this.enemies = [];
+
+        this.scene.map.forEachTile(tile => {
+            if(tile.properties.enemy)
+            {
+                tile.index = 1;
+                this.enemies.push(new Enemy(this.scene, tile.x, tile.y));
+            }
+        });
     }
 
     add(tileX, tileY)
