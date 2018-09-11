@@ -112,8 +112,8 @@ export default class Player {
                             if (this.sprite.x + xmov == wall.x) {
                                 if(this.scene.isEnemyAt(this.sprite.x, wall.y))
                                 {
-                                    var enemy = this.scene.getObjAt(this.sprite.x, wall.y);
-                                    enemy.stunEnemy();
+                                    //var enemy = this.scene.getObjAt(this.sprite.x, wall.y);
+                                    //enemy.stunEnemy();
                                 }
                                 this.scene.tweens.timeline({
                                     targets: wall,
@@ -144,8 +144,8 @@ export default class Player {
                             if (this.sprite.y + ymov == wall.y) {
                                 if(this.scene.isEnemyAt(wall.x, this.sprite.y))
                                 {
-                                    var enemy = this.scene.getObjAt(wall.x, this.sprite.y);
-                                    enemy.stunEnemy();
+                                    //var enemy = this.scene.getObjAt(wall.x, this.sprite.y);
+                                    //enemy.stunEnemy();
                                 }
                                 this.scene.tweens.timeline({
                                     targets: wall,
