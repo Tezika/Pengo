@@ -2,6 +2,7 @@ import 'phaser'
 import  Player from './player.js'
 import  BlockManager from './blockmanager.js'
 import Enemy from './enemy.js';
+import EnemyManager from './enemymanager.js';
 
 export default class GameScene extends Phaser.Scene
 {
@@ -21,6 +22,7 @@ export default class GameScene extends Phaser.Scene
         this.titlesetName = 'snowWIP';
 
         this.blockManager = new BlockManager(this);
+        this.enemyManager = new EnemyManager(this);
     }
 
     create()
@@ -39,18 +41,25 @@ export default class GameScene extends Phaser.Scene
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
  
         //create the player
-        this.player = new Player(this, 0, 0);
-
-        var enemy = new Enemy(this, 0, 0);
+        this.player = new Player(this, 1, 1);
 
         //Blocks' setup 
         this.blockManager.create();
+        //Enemy's setup
+        this.enemyManager.create();
+        this.enemyManager.add(4, 2);
+        this.enemyManager.add(3, 2);
+        this.enemyManager.add(6, 2);
+        this.enemyManager.add(7, 2);
+        this.enemyManager.add(3, 8);
+        this.enemyManager.add(10, 3);
     }
 
     update(time, delta)
     {
         this.player.update(time);
         this.blockManager.update(time);
+        this.enemyManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)
@@ -68,6 +77,7 @@ export default class GameScene extends Phaser.Scene
                     open = false;
                 }
             });
+
             return open;
         }
         else
@@ -75,4 +85,25 @@ export default class GameScene extends Phaser.Scene
             return false;
         }
     } 
+
+    isEnemyAt(worldX, worldY)
+    {
+        var tile = this.map.getTileAtWorldXY(worldX, worldY, true);
+        if(tile && !tile.collides)
+        {
+            var isEnemyHere = false;
+            this.enemyManager.enemies.forEach(enemy => {
+                var enemyTile = this.map.getTileAtWorldXY(enemy.sprite.x, enemy.sprite.y);
+                if(enemyTile == tile)
+                {
+                    isEnemyHere = true;
+                }
+            });
+            return isEnemyHere;
+        } 
+        else
+        {
+            return false;
+        }
+    }
 }

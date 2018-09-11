@@ -3,14 +3,14 @@ import { Direction } from './block.js';
 
 export default class Player
 {
-    constructor(scene, x, y)
+    constructor(scene, tileX, tileY)
     {
         this.scene = scene;
-        this.sprite = scene.physics.add.sprite(x, y, "player", 0);
+        this.sprite = scene.physics.add.sprite(0, 0, "player", 0);
         this.sprite.scaleX = .5;
         this.sprite.scaleY = .5;
-        this.sprite.x = this.scene.map.tileToWorldX(1)+16;
-        this.sprite.y= this.scene.map.tileToWorldY(1)+16;
+        this.sprite.x = this.scene.map.tileToWorldX(tileX)+16;
+        this.sprite.y= this.scene.map.tileToWorldY(tileY)+16;
 
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.scene.physics.add.collider(this.sprite, this.backgroundLayer);

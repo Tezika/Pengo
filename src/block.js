@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import EnemyManager from "./enemymanager";
 
 //Export a enum
 export const Direction = {
@@ -22,6 +23,7 @@ export default class Block
         this._move = false;
         this._timer = 0;
         this._stopArea = 0;
+        this._moveDir = Direction.Right;
     }
 
     move(dir)
@@ -31,10 +33,9 @@ export default class Block
             return;
         }
 
-        console.log("The block should move in " + dir);
-
         this._move = true;
         this._timer = 0;
+        this._moveDir = dir;
 
         switch(dir)
         {
@@ -75,11 +76,25 @@ export default class Block
                 }
                 else
                 {
+                    //if the next tile is enemy, then it pushes the enemy
                     var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
                     this.sprite.x = this.scene.map.tileToWorldX(stopTile.x)+16;
                     this.sprite.y = this.scene.map.tileToWorldY(stopTile.y)+16;
                     this._move = false;
-                }     
+                } 
+                
+                //check there is any enemy in the moving direction
+                if(this.scene.isEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
+                {
+                    var tile = this.scene.map.getTileAtWorldXY(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
+                    var enemy = this.scene.enemyManager.getEnemyByTile(tile);
+                    if(enemy != null && !enemy.pushing)
+                    {
+                        enemy.pushDir = this._moveDir;
+                        enemy.pushing = true;
+                        enemy.pusher = this;
+                    }
+                }
             }
         }
     } 
