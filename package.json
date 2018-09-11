@@ -32,6 +32,7 @@
   },
   "bundleDependencies": false,
   "dependencies": {
+    "npm": "^6.4.1",
     "phaser": "^3.3.0"
   },
   "deprecated": false,

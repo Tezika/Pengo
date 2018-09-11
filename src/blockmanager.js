@@ -17,13 +17,14 @@ export default class BlockManager
 
     create()
     {
-        this.blocks = []; 
-        var blockSprite = this.scene.map.createFromObjects('blocks', 'block', {key:'player'}, this);
-        blockSprite.forEach(block => {
-          
-            var tile = this.scene.map.getTileAtWorldXY(block.x, block.y);
-            tile.setCollision(true, true, true, true);
-            this.blocks.push(new Block(this.scene, block));
+        this.blocks = [];
+        //var blockSprite = this.scene.map.createFromObjects('blocks', 'block', {key:'player'}, this);
+        this.scene.map.forEachTile(block => {
+            if(block.properties.block)
+            {
+                block.index = 36;
+                this.blocks.push(new Block(this.scene, block));
+            }
         });
     }
 }
