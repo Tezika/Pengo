@@ -75,7 +75,6 @@ export default class Player
         }
     }
         
-      
     push(time)
     {
         var repeatPushDelay = 100;
@@ -117,7 +116,6 @@ export default class Player
                     {
                        if(!this.scene.isTileOpenAt(block.sprite.x + xmov, block.sprite.y + ymov))
                        {
-                            console.log("the block need be destroyed");
                             block.destroy();
                        }
                        else
@@ -129,5 +127,10 @@ export default class Player
                 this.lastPushTime = time;
             }    
         }
+    }
+
+    Die()
+    {
+           
     }
 }

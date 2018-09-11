@@ -13,6 +13,9 @@ export default class Enemy
         this.sprite.x = this.scene.map.tileToWorldX(tileX)+16;
         this.sprite.y= this.scene.map.tileToWorldY(tileY)+16;
 
+        //AI stuff
+        this._moveDir = Direction.Left;
+
         //Push stuff
         this.pushing = false;
         this.pushingSpeed = 10;
