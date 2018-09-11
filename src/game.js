@@ -77,6 +77,7 @@ export default class GameScene extends Phaser.Scene
                 {
                     var sprite = this.physics.add.sprite(0, 0, "Skull Penguin", 0);
                 }
+                sprite.name = "wall";
                 sprite.x = this.map.tileToWorldX(block.x) + 16;
                 sprite.y = this.map.tileToWorldY(block.y) + 16;
                 sprite.scaleX = .5;
@@ -176,26 +177,44 @@ export default class GameScene extends Phaser.Scene
         {
             return false;
         }
-    } 
+    }
+
+    getObjAt (worldX, worldY)
+    {
+        for(var i = 0; i < this.blockManager.blocks.length; i++)
+        {
+            if(worldX == this.blockManager.blocks[i].sprite.x && worldY == this.blockManager.blocks[i].sprite.y)
+            {
+                return this.blockManager.blocks[i];
+            }
+        }
+
+        for(var i = 0; i < this.wallSprites.length; i++)
+        {
+            if(worldX == this.wallSprites[i].x && worldY == this.wallSprites[i].y)
+            {
+                return this.wallSprites[i];
+            }
+        }
+
+        for(var i = 0; i < this.enemyManager.enemies.length; i++)
+        {
+            if(worldX == this.enemyManager.enemies[i].sprite.x && worldY == this.enemyManager.enemies[i].sprite.y)
+            {
+                return this.enemyManager.enemies[i];
+            }
+        }
+    }
 
     isEnemyAt(worldX, worldY)
     {
-        var tile = this.map.getTileAtWorldXY(worldX, worldY, true);
-        if(tile && !tile.collides)
-        {
-            var isEnemyHere = false;
-            this.enemyManager.enemies.forEach(enemy => {
-                var enemyTile = this.map.getTileAtWorldXY(enemy.sprite.x, enemy.sprite.y);
-                if(enemyTile == tile)
-                {
-                    isEnemyHere = true;
-                }
-            });
-            return isEnemyHere;
-        } 
-        else
-        {
-            return false;
-        }
+        var isEnemyHere = false;
+        this.enemyManager.enemies.forEach(enemy => {
+            if(enemy.sprite.x >= worldX && enemy.sprite.x <= worldX+30 && enemy.sprite.y >= worldY && enemy.sprite.y <= worldY+30 )
+            {
+                isEnemyHere = true;
+            }
+        });
+        return isEnemyHere;
     }
 }

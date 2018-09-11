@@ -62,4 +62,33 @@ export default class Enemy
         this.scene.enemyManager.remove(this);
         this.sprite.destroy();
     }
+
+    stunEnemy()
+    {
+        console.log("ENEMY STUNNNED");
+        this.scene.tweens.timeline({
+            targets: this.sprite,
+            ease: 'Linear',
+            duration: 20,
+            tweens: [{
+                x: this.sprite.x,
+            },
+            {
+                y: this.sprite.y,
+            },
+            {
+                x: this.sprite.x + 8,
+            },
+            {
+                y: this.sprite.y + 8,
+            },
+            {
+                x: this.sprite.x,
+            },
+            {
+                y: this.sprite.y,
+            }]
+
+        });
+    }
 }
