@@ -58,8 +58,6 @@ export default class Block
                 break;
 
         }
-
-
     }
 
     update(time)
