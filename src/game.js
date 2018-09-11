@@ -1,6 +1,7 @@
 import 'phaser'
 import  Player from './player.js'
 import  BlockManager from './blockmanager.js'
+import Block from './block.js';
 
 export default class GameScene extends Phaser.Scene
 {
@@ -12,9 +13,10 @@ export default class GameScene extends Phaser.Scene
     preload()
     {
         //load the tiles
-        this.load.tilemapTiledJSON('map', 'assets/tilemap/test.json');
+        this.load.tilemapTiledJSON('map', 'assets/tilemap/test3.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
         this.load.image('player','assets/player.jpg');
+        this.load.image('block','assets/block.png');
         this.titlesetName = 'snowWIP';
 
         this.blockManager = new BlockManager(this);
@@ -30,13 +32,10 @@ export default class GameScene extends Phaser.Scene
         // You can load a layer from the map using the layer name from Tiled, or by using the layer
         // index (0 in this case).
         this.backgroundLayer = this.map.createDynamicLayer('background', tiles);
-        this.backgroundLayer.setCollision([18, 38, 4,68]);
+        this.backgroundLayer.setCollision([3, 38, 33,68]);
  
         this.player = new Player(this, 0, 0);
-        this.player.sprite.x = this.map.tileToWorldX(1)+16;
-        this.player.sprite.y= this.map.tileToWorldY(1)+16;
         this.player.cursors = this.input.keyboard.createCursorKeys();
-
 
         //Blocks' setup 
         this.blockManager.create();
@@ -54,7 +53,14 @@ export default class GameScene extends Phaser.Scene
         var tile = this.map.getTileAtWorldXY(worldX, worldY, true);
         if (tile && !tile.collides)
         {
-            return true;
+            var open = true;
+            this.blockManager.blocks.forEach(block => {
+                if(worldX == block.sprite.x && worldY == block.sprite.y)
+                {
+                    open = false;
+                }
+            });
+            return open;
         }
         else
         {
