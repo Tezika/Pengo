@@ -1,4 +1,5 @@
 import 'phaser'
+import { Direction } from './block.js'
 
 export default class Player
 {
@@ -14,13 +15,14 @@ export default class Player
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.scene.physics.add.collider(this.sprite, this.backgroundLayer);
         this.lastMoveTime = 0;
+        this.lastPushTime = 0;
 
         this.spaceBar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update(time)
     {
-        this.pushBlock(time);
+        this.push(time);
         this.updateMovement(time);
     }
 
@@ -71,52 +73,59 @@ export default class Player
                 }
             }
         }
-        
-        if (this.spaceBar.isDown)
-        {
-            var xmov = tw;
-            var ymov = th;
-            switch(this.sprite.angle)
-            {
-                case 0: //right
-                    ymov = 0;
-                    break;
-                case 90: //down
-                    xmov = 0;
-                    break;
-                case -180: //left
-                    xmov = -xmov;
-                    ymov = 0;
-                    break;
-                case -90: //up
-                    xmov = 0;
-                    ymov = -ymov;
-                    break;
-            }
-            
-            if (!this.scene.isTileOpenAt(this.sprite.x + xmov, this.sprite.y + ymov))
-            {
-                this.scene.blockManager.blocks.forEach(block => {
-                    if(this.sprite.x + xmov == block.sprite.x && this.sprite.y + ymov == block.sprite.y)
-                    {
-                        while(this.scene.isTileOpenAt(block.sprite.x + xmov, block.sprite.y + ymov))
-                        {
-                            block.sprite.x += xmov;
-                            block.sprite.y += ymov;
-                        }
-                    }
-                });
-            }
-        }
     }
-
-    pushBlock(time)
+        
+      
+    push(time)
     {
         var repeatPushDelay = 100;
         if (time > this.lastPushTime + repeatPushDelay) 
         {
-            this.lastPushTime = time;
+            var tw = this.scene.tileWidth;
+            var th = this.scene.tileHeight;
+            if (this.spaceBar.isDown)
+            {
+                var xmov = tw;
+                var ymov = th;
+                var dir = Direction.Up;
+                switch(this.sprite.angle)
+                {
+                    case 0: //right
+                        dir = Direction.Right;
+                        ymov = 0;
+                        break;
+                    case 90: //down
+                        dir = Direction.Down;
+                        xmov = 0;
+                        break;
+                    case -180: //left
+                        dir = Direction.Left;
+                        xmov = -xmov;
+                        ymov = 0;
+                        break;
+                    case -90: //up
+                        dir = Direction.Up;
+                        xmov = 0;
+                        ymov = -ymov;
+                        break;
+                    default:
+                         break;
+                }
+                
+                console.log(dir);
 
+                if (!this.scene.isTileOpenAt(this.sprite.x + xmov, this.sprite.y + ymov))
+                {
+                    this.scene.blockManager.blocks.forEach(block => {
+                        if(this.sprite.x + xmov == block.sprite.x && this.sprite.y + ymov == block.sprite.y)
+                        {
+                      
+                            block.move(dir);
+                        }
+                    });
+                }
+                this.lastPushTime = time;
+            }    
         }
     }
 }

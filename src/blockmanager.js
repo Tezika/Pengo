@@ -27,4 +27,11 @@ export default class BlockManager
             }
         });
     }
+
+    update(time)
+    {
+        this.blocks.forEach(block => {
+            block.update(time);
+        });
+    }
 }

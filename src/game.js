@@ -1,7 +1,6 @@
 import 'phaser'
 import  Player from './player.js'
 import  BlockManager from './blockmanager.js'
-import Block from './block.js';
 
 export default class GameScene extends Phaser.Scene
 {
@@ -20,7 +19,6 @@ export default class GameScene extends Phaser.Scene
         this.titlesetName = 'snowWIP';
 
         this.blockManager = new BlockManager(this);
-
     }
 
     create()
@@ -34,6 +32,9 @@ export default class GameScene extends Phaser.Scene
         // index (0 in this case).
         this.backgroundLayer = this.map.createDynamicLayer('background', tiles);
         this.backgroundLayer.setCollision([3, 38, 33,68]);
+
+        this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
+        this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
  
         //create the player
         this.player = new Player(this, 0, 0);
@@ -45,7 +46,8 @@ export default class GameScene extends Phaser.Scene
 
     update(time, delta)
     {
-        this.player.updateMovement(time);
+        this.player.update(time);
+        this.blockManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)
@@ -69,19 +71,4 @@ export default class GameScene extends Phaser.Scene
             return false;
         }
     } 
-    
-    isBlockAt(WorldX, worldY)
-    {
-
-    }
-
-    updateMap()
-    {
-
-    }
-
-    callback()
-    {
-        console.log("call back from the game");
-    }
 }
