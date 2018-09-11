@@ -22,6 +22,7 @@ export default class BlockManager
         this.scene.map.forEachTile(block => {
             if(block.properties.block)
             {
+                block.index = 36;
                 this.blocks.push(new Block(this.scene, block));
             }
         });
