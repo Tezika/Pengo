@@ -14,8 +14,25 @@ export default class Player {
         this.scene.physics.add.collider(this.sprite, this.backgroundLayer);
         this.lastMoveTime = 0;
         this.lastPushTime = 0;
+        this.lastStunTime = 0;
+        this.facing = Direction.Down;
 
         this.spaceBar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        this.scene.anims.create({
+            key: 'downPlayer',
+            frames: this.scene.anims.generateFrameNumbers('downPlayer', { start: 0, end: 13 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.scene.anims.create({
+            key: 'sidePlayer',
+            frames: this.scene.anims.generateFrameNumbers('sidePlayer', { start: 0, end: 12 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.sprite.anims.play('downPlayer', true);
     }
 
     update(time) {
@@ -31,14 +48,18 @@ export default class Player {
 
         if (time > this.lastMoveTime + repeatMoveDelay) {
             if (this.cursors.down.isDown) {
-                this.sprite.angle = 90;
+                this.sprite.anims.play('downPlayer', true);
+                this.facing = Direction.Down;
+                this.sprite.flipX = false;
                 if (this.scene.isTileOpenAt(this.sprite.x, this.sprite.y + th)) {
                     this.sprite.y += th;
                     this.lastMoveTime = time;
                 }
             }
             else if (this.cursors.up.isDown) {
-                this.sprite.angle = 270;
+                this.sprite.anims.play('downPlayer', true);
+                this.facing = Direction.Up;
+                this.sprite.flipX = false;
                 if (this.scene.isTileOpenAt(this.sprite.x, this.sprite.y - th)) {
                     this.sprite.y -= th;
                     this.lastMoveTime = time;
@@ -46,14 +67,18 @@ export default class Player {
             }
 
             if (this.cursors.left.isDown) {
-                this.sprite.angle = 180;
+                this.sprite.anims.play('sidePlayer', true);
+                this.sprite.flipX = false;
+                this.facing = Direction.Left;
                 if (this.scene.isTileOpenAt(this.sprite.x - tw, this.sprite.y)) {
                     this.sprite.x -= tw;
                     this.lastMoveTime = time;
                 }
             }
             else if (this.cursors.right.isDown) {
-                this.sprite.angle = 0;
+                this.sprite.anims.play('sidePlayer', true);
+                this.facing = Direction.Right;
+                this.sprite.flipX = true;
                 if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y)) {
                     this.sprite.x += tw;
                     this.lastMoveTime = time;
@@ -63,30 +88,26 @@ export default class Player {
     }
 
     push(time) {
-        var repeatPushDelay = 100;
+        var repeatPushDelay = 200;
+        var repeatStunDelay = 700;
         if (time > this.lastPushTime + repeatPushDelay) {
             var tw = this.scene.tileWidth;
             var th = this.scene.tileHeight;
             if (this.spaceBar.isDown) {
                 var xmov = tw;
                 var ymov = th;
-                var dir = Direction.Up;
-                switch (this.sprite.angle) {
-                    case 0: //right
-                        dir = Direction.Right;
+                switch (this.facing) {
+                    case Direction.Right: //right
                         ymov = 0;
                         break;
-                    case 90: //down
-                        dir = Direction.Down;
+                    case Direction.Down: //down
                         xmov = 0;
                         break;
-                    case -180: //left
-                        dir = Direction.Left;
+                    case Direction.Left: //left
                         xmov = -xmov;
                         ymov = 0;
                         break;
-                    case -90: //up
-                        dir = Direction.Up;
+                    case Direction.Up: //up
                         xmov = 0;
                         ymov = -ymov;
                         break;
@@ -100,84 +121,14 @@ export default class Player {
                             block.destroy();
                         }
                         else {
-                            block.move(dir);
+                            block.move(this.facing);
                         }
                     }
                 });
 
-                var lookSpr = this.scene.getObjAt(this.sprite.x + xmov, this.sprite.y + ymov);
-                if (lookSpr instanceof Phaser.GameObjects.Sprite && lookSpr.name == "wall") {
-                    this.scene.wallManager.wallSprites.forEach(wall => {
-                        if (xmov != 0) {
-                            if (this.sprite.x + xmov == wall.x) {
-                                if (this.scene.isEnemyAt(this.sprite.x, wall.y)) {
-                                    var tile = this.scene.map.getTileAtWorldXY(this.sprite.x, wall.y);
-                                    var enemy = this.scene.enemyManager.getEnemyByTile(tile);
-                                    if (enemy != null) {
-                                        enemy.stunEnemy();
-                                    }
-                                }
-                                this.scene.tweens.timeline({
-                                    targets: wall,
-                                    ease: 'Linear',
-                                    duration: 20,
-                                    tweens: [{
-                                        x: wall.x,
-                                    },
-                                    {
-                                        y: wall.y,
-                                    },
-                                    {
-                                        x: wall.x - xmov / 4,
-                                    },
-                                    {
-                                        y: wall.y - xmov / 4,
-                                    },
-                                    {
-                                        x: wall.x,
-                                    },
-                                    {
-                                        y: wall.y,
-                                    }]
 
-                                });
-                            }
-                        } else if (ymov != 0) {
-                            if (this.sprite.y + ymov == wall.y) {
-                                if (this.scene.isEnemyAt(wall.x, this.sprite.y)) {
-                                    var tile = this.scene.map.getTileAtWorldXY(wall.x, this.sprite.y);
-                                    var enemy = this.scene.enemyManager.getEnemyByTile(tile);
-                                    if (enemy != null) {
-                                        enemy.stunEnemy();
-                                    }
-                                }
-                                this.scene.tweens.timeline({
-                                    targets: wall,
-                                    ease: 'Linear',
-                                    duration: 20,
-                                    tweens: [{
-                                        x: wall.x,
-                                    },
-                                    {
-                                        y: wall.y,
-                                    },
-                                    {
-                                        x: wall.x - ymov / 4,
-                                    },
-                                    {
-                                        y: wall.y - ymov / 4,
-                                    },
-                                    {
-                                        x: wall.x,
-                                    },
-                                    {
-                                        y: wall.y,
-                                    }]
-
-                                });
-                            }
-                        }
-                    });
+                if (time > this.lastStunTime + repeatStunDelay) {
+                   this.WallStunning(time, xmov, ymov);
                 }
 
                 this.lastPushTime = time;
@@ -187,5 +138,84 @@ export default class Player {
 
     Die() {
 
+    }
+
+    WallStunning(time, xmov, ymov)
+    {
+        var lookSpr = this.scene.getObjAt(this.sprite.x + xmov, this.sprite.y + ymov);
+        if (lookSpr instanceof Phaser.GameObjects.Sprite && lookSpr.name == "wall") {
+            this.lastStunTime = time;
+            this.scene.wallManager.wallSprites.forEach(wall => {
+                if (xmov != 0) {
+                    if (this.sprite.x + xmov == wall.x) {
+                        if (this.scene.isEnemyAt(this.sprite.x, wall.y)) {
+                            var tile = this.scene.map.getTileAtWorldXY(this.sprite.x, wall.y);
+                            var enemy = this.scene.enemyManager.getEnemyByTile(tile);
+                            if (enemy != null) {
+                                enemy.stunEnemy();
+                            }
+                        }
+                        this.scene.tweens.timeline({
+                            targets: wall,
+                            ease: 'Linear',
+                            duration: 20,
+                            tweens: [{
+                                x: wall.x,
+                            },
+                            {
+                                y: wall.y,
+                            },
+                            {
+                                x: wall.x - xmov / 4,
+                            },
+                            {
+                                y: wall.y - xmov / 4,
+                            },
+                            {
+                                x: wall.x,
+                            },
+                            {
+                                y: wall.y,
+                            }]
+
+                        });
+                    }
+                } else if (ymov != 0) {
+                    if (this.sprite.y + ymov == wall.y) {
+                        if (this.scene.isEnemyAt(wall.x, this.sprite.y)) {
+                            var tile = this.scene.map.getTileAtWorldXY(wall.x, this.sprite.y);
+                            var enemy = this.scene.enemyManager.getEnemyByTile(tile);
+                            if (enemy != null) {
+                                enemy.stunEnemy();
+                            }
+                        }
+                        this.scene.tweens.timeline({
+                            targets: wall,
+                            ease: 'Linear',
+                            duration: 20,
+                            tweens: [{
+                                x: wall.x,
+                            },
+                            {
+                                y: wall.y,
+                            },
+                            {
+                                x: wall.x - ymov / 4,
+                            },
+                            {
+                                y: wall.y - ymov / 4,
+                            },
+                            {
+                                x: wall.x,
+                            },
+                            {
+                                y: wall.y,
+                            }]
+
+                        });
+                    }
+                }
+            });
+        }
     }
 }
