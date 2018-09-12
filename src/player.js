@@ -139,8 +139,14 @@ export default class Player {
         }
     }
 
-    Die() {
+    die() {
+        this.respawn();
+    }
 
+    respawn()
+    {
+        this.sprite.x = this.scene.map.tileToWorldX(1) + Constant.Tile_Size/2;
+        this.sprite.y= this.scene.map.tileToWorldY(1) + Constant.Tile_Size/2;
     }
 
     WallStunning(time, xmov, ymov)
