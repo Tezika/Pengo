@@ -17,7 +17,6 @@ export default class GameScene extends Phaser.Scene
         //load the tiles
         this.load.tilemapTiledJSON('map', 'assets/tilemap/test3.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
-        this.load.image('player','assets/player.jpg');
         this.load.image('block','assets/block.png');
         this.load.image('pengs', 'assets/pengs.png');
         this.titlesetName = 'snowWIP';
