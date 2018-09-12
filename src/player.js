@@ -124,7 +124,6 @@ export default class Player {
                             block.destroy();
                         }
                         else {
-                            console.log("push the block.");
                             block.move(this.facing);
                         }
                     }
