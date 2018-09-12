@@ -107,7 +107,7 @@ export default class Player {
 
                 var lookSpr = this.scene.getObjAt(this.sprite.x + xmov, this.sprite.y + ymov);
                 if (lookSpr instanceof Phaser.GameObjects.Sprite && lookSpr.name == "wall") {
-                    this.scene.wallSprites.forEach(wall => {
+                    this.scene.wallManager.wallSprites.forEach(wall => {
                         if (xmov != 0) {
                             if (this.sprite.x + xmov == wall.x) {
                                 if(this.scene.isEnemyAt(this.sprite.x, wall.y))

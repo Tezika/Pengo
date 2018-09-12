@@ -3,6 +3,7 @@ import  Player from './player.js'
 import  BlockManager from './blockmanager.js'
 import Enemy from './enemy.js';
 import EnemyManager from './enemymanager.js';
+import WallManager from './wallmanager.js';
 
 export default class GameScene extends Phaser.Scene
 {
@@ -27,6 +28,7 @@ export default class GameScene extends Phaser.Scene
 
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
+        this.wallManager = new WallManager(this);
     }
 
     create()
@@ -52,45 +54,10 @@ export default class GameScene extends Phaser.Scene
         //Enemy's setup
         this.enemyManager.create();
 
-        
-        this.wallSprites = [];
-        this.wallParty = false;
-        this.wallInc = 0;
-        this.partyModeTimer = 0;
-        this.partyDuration = 3000;
-        this.hsv = Phaser.Display.Color.HSVColorWheel();
-
-        this.map.forEachTile(block => {
-            if(block.properties.wall)
-            {
-                block.index = 154;
-
-                if(Math.random() > .5)
-                {
-                    var sprite = this.physics.add.sprite(0, 0, "Skull", 0);
-                }
-                else
-                {
-                    var sprite = this.physics.add.sprite(0, 0, "Skull Penguin", 0);
-                }
-                sprite.name = "wall";
-                sprite.x = this.map.tileToWorldX(block.x) + 16;
-                sprite.y = this.map.tileToWorldY(block.y) + 16;
-                sprite.scaleX = .5;
-                sprite.scaleY = .5;
-                sprite.angle = (Math.random() * 360);
-                this.wallSprites.push(sprite);
-            }
-        });
+        //Wall setup
+        this.wallManager.create();
 
         this.backgroundLayer.setCollision([154]);
-
-        this.anims.create({
-            key: 'specialActive',
-            frames: this.anims.generateFrameNumbers('blockSpecial', { start: 0, end: 1 }),
-            frameRate: 10,
-            repeat: -1
-        });
     }
 
     update(time, delta)
@@ -98,57 +65,7 @@ export default class GameScene extends Phaser.Scene
         this.player.update(time);
         this.blockManager.update(time);
         this.enemyManager.update(time);
-        if(this.wallParty)
-        {
-            if(time > this.partyModeTimer + this.partyDuration)
-            {
-                this.wallParty = false;
-                this.endWallSpritesParty();
-            }
-            else
-            {
-                this.wallSpritesParty();
-            }
-        }
-    }
-
-    wallSpritesParty()
-    {
-        var top = this.hsv[this.wallInc].color;
-        var bottom = this.hsv[359 - this.wallInc].color;
-        this.wallSprites.forEach(sprite => {
-            sprite.setTint(top,top,bottom,bottom);
-        });
-        
-        this.blockManager.blocks.forEach(block => {
-            if(block.special)
-            {
-                block.sprite.setTint(top,top,bottom,bottom);
-            }
-        });
-
-        this.wallInc+=3;
-        if(this.wallInc == 360)
-        {
-            this.wallInc = 0;
-        }
-    }
-
-    endWallSpritesParty()
-    {
-        this.wallInc = 0;
-        this.wallSprites.forEach(sprite => {
-            sprite.clearTint();
-        });
-        
-        this.blockManager.blocks.forEach(block => {
-            if(block.special)
-            {
-                block.sprite.clearTint();
-                block.special = false;
-                block.sprite.anims.stopOnRepeat();
-            }
-        });
+        this.wallManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)
@@ -185,11 +102,11 @@ export default class GameScene extends Phaser.Scene
             }
         }
 
-        for(var i = 0; i < this.wallSprites.length; i++)
+        for(var i = 0; i < this.wallManager.wallSprites.length; i++)
         {
-            if(worldX == this.wallSprites[i].x && worldY == this.wallSprites[i].y)
+            if(worldX == this.wallManager.wallSprites[i].x && worldY == this.wallManager.wallSprites[i].y)
             {
-                return this.wallSprites[i];
+                return this.wallManager.wallSprites[i];
             }
         }
 

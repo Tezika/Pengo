@@ -88,8 +88,8 @@ export default class Block {
                 if(this.scene.isEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
                 {
                     var tile = this.scene.map.getTileAtWorldXY(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
-                    //var enemy = this.scene.enemyManager.getEnemyByTile(tile);
-                    var enemy = this.scene.enemyManager.getEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
+                    var enemy = this.scene.enemyManager.getEnemyByTile(tile);
+                    //var enemy = this.scene.enemyManager.getEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
                     if(enemy != null && !enemy.pushing)
                     {
                         enemy.pushDir = this._moveDir;
@@ -118,11 +118,11 @@ export default class Block {
                 {
                     this.sprite.anims.play('specialActive', true);
                     if((down != null && down.special && up != null && up.special) 
-                    || (left != null && left.special && right != null && right.special) && !this.scene.wallParty)
+                    || (left != null && left.special && right != null && right.special) && !this.scene.wallManager.wallParty)
                     {
                         console.log("BONUS POINTS YAAA");
-                        this.scene.partyModeTimer = time;
-                        this.scene.wallParty = true;
+                        this.scene.wallManager.partyModeTimer = time;
+                        this.scene.wallManager.wallParty = true;
                     }
                 }
                 else{
