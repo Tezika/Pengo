@@ -1,11 +1,10 @@
 import 'phaser';
+import Block from './block';
 import { Direction } from './block';
 import { Constant } from './game';
 
-export default class Enemy
-{
-    constructor(scene, tileX, tileY)
-    {
+export default class Enemy {
+    constructor(scene, tileX, tileY) {
         this.scene = scene;
         this.sprite = scene.physics.add.sprite(0, 0, "pengs", 0);
         this.sprite.scaleX = .5;
@@ -21,29 +20,30 @@ export default class Enemy
         this._stopArea = null;
         this._timer = 0;
 
+        //Stun
+        this.stunned = false;
+        this.stunTime = 2000;
+        this.stunTimer = 0;
+
         //Push stuff
         this.pushing = false;
         this.pushingSpeed = 10;
         this.pushDir = Direction.Left;
-        this.pusher  = null;
+        this.pusher = null;
+        this.destroying = false;
     }
 
-    update(time)
-    {
-        if(this.pushing)
-        {
+    update(time) {
+        if (this.pushing) {
             this.updatePushing();
         }
-        else
-        {
+        else {
             this.updateMovement(time);
         }
     }
 
-    updatePushing()
-    {
-        switch(this.pushDir)
-        {
+    updatePushing() {
+        switch (this.pushDir) {
             case Direction.Up:
                 this.sprite.y = this.pusher.sprite.y - this.scene.tileHeight;
                 break;
@@ -60,67 +60,111 @@ export default class Enemy
                 break;
         }
         //when the enemy died.
-        if(!this.scene.isTileOpenAt(this.sprite.x, this.sprite.y))
-        {
+        if (!this.scene.isTileOpenAt(this.sprite.x, this.sprite.y)) {
             this.destroy();
         }
     }
 
-    updateMovement(time)
-    {
-        if (time > this._moveDuration + this._timer)
-        {
-            switch ( this._moveDir)
-            {
-               case Direction.Up:
-                   this._moveVelocity = new Phaser.Math.Vector2(0, -this.moveSpeed);
-                   this._stopArea = new Phaser.Math.Vector2(0, -this.scene.tileHeight);
-                   break;
-               case Direction.Down:
-                   this._moveVelocity = new Phaser.Math.Vector2(0, this.moveSpeed);
-                   this._stopArea = new Phaser.Math.Vector2(0, this.scene.tileHeight);
-                   break;
-               case Direction.Left:
-                   this._moveVelocity = new Phaser.Math.Vector2(-this.moveSpeed, 0);
-                   this._stopArea = new Phaser.Math.Vector2(-this.scene.tileWidth, 0);
-                   break;
-               case Direction.Right:
-                   this._moveVelocity = new Phaser.Math.Vector2(this.moveSpeed, 0);
-                   this._stopArea = new Phaser.Math.Vector2(this.scene.tileWidth, 0)
-                   break;
-               default:
-                   break;
-           }
-
+    updateMovement(time) {
+        if (this.stunned) {
+            this.stunned = false;
+            this.stunTimer = time;
+            this._timer = 0;
+        }
+        if (time > this._moveDuration + this._timer && time > this.stunTime + this.stunTimer) {
+            switch (this._moveDir) {
+                case Direction.Up:
+                    this._moveVelocity = new Phaser.Math.Vector2(0, -this.moveSpeed);
+                    this._stopArea = new Phaser.Math.Vector2(0, -this.scene.tileHeight);
+                    break;
+                case Direction.Down:
+                    this._moveVelocity = new Phaser.Math.Vector2(0, this.moveSpeed);
+                    this._stopArea = new Phaser.Math.Vector2(0, this.scene.tileHeight);
+                    break;
+                case Direction.Left:
+                    this._moveVelocity = new Phaser.Math.Vector2(-this.moveSpeed, 0);
+                    this._stopArea = new Phaser.Math.Vector2(-this.scene.tileWidth, 0);
+                    break;
+                case Direction.Right:
+                    this._moveVelocity = new Phaser.Math.Vector2(this.moveSpeed, 0);
+                    this._stopArea = new Phaser.Math.Vector2(this.scene.tileWidth, 0)
+                    break;
+                default:
+                    break;
+            }
             //check whether the enemys to stop or not
-            if (this.scene.isTileOpenAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
-             {
+            if (this.scene.isTileOpenAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y)) {
                 this.sprite.x += this._moveVelocity.x;
                 this.sprite.y += this._moveVelocity.y;
                 this._timer = time;
-             }
-             else
-             {
-                 var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                 this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
-                 this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
-                 this.getRandomMoveDir();
-             }
+            }
+            else if (this.destroying) {
+                var block = this.scene.getObjAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
+                if (block != null && block instanceof Block && block.destructable) {
+                    block.destroy();
+                    this.sprite.x += this._moveVelocity.x;
+                    this.sprite.y += this._moveVelocity.y;
+                    this._timer = time;
+                }
+                else {
+
+                    var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
+                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
+                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+                    this.getRandomMoveDir();
+                }
+            }
+            else {
+                var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
+                this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
+                this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+                this.getRandomMoveDir();
+            }
         }
     }
 
-    destroy()
-    {
+    destroy() {
         this.scene.enemyManager.remove(this);
         this.sprite.destroy();
     }
 
-    getRandomMoveDir()
-    {
+    stunEnemy() {
+        this.stunned = true;
+        var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
+        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
+        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+        this.getRandomMoveDir();
+
+        this.scene.tweens.timeline({
+            targets: this.sprite,
+            ease: 'Linear',
+            duration: 20,
+            tweens: [{
+                x: this.sprite.x,
+            },
+            {
+                y: this.sprite.y,
+            },
+            {
+                x: this.sprite.x + 8,
+            },
+            {
+                y: this.sprite.y + 8,
+            },
+            {
+                x: this.sprite.x,
+            },
+            {
+                y: this.sprite.y,
+            }]
+
+        });
+    }
+
+    getRandomMoveDir() {
         //pick up a new direction
-        var val =  Math.floor(Math.random() * Math.floor(4));
-        switch(val)
-        {
+        var val = Math.floor(Math.random() * Math.floor(4));
+        switch (val) {
             case 0:
                 this._moveDir = Direction.Up;
                 break;

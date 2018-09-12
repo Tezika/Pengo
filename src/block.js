@@ -84,7 +84,7 @@ export default class Block {
                     this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
                     this._move = false;
                 } 
-                
+                   
                 //check there is any enemy in the moving direction
                 if(this.scene.isEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
                 {
@@ -119,11 +119,11 @@ export default class Block {
                 {
                     this.sprite.anims.play('specialActive', true);
                     if((down != null && down.special && up != null && up.special) 
-                    || (left != null && left.special && right != null && right.special) && !this.scene.wallParty)
+                    || (left != null && left.special && right != null && right.special) && !this.scene.wallManager.wallParty)
                     {
                         console.log("BONUS POINTS YAAA");
-                        this.scene.partyModeTimer = time;
-                        this.scene.wallParty = true;
+                        this.scene.wallManager.partyModeTimer = time;
+                        this.scene.wallManager.wallParty = true;
                     }
                 }
                 else{

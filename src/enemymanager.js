@@ -26,6 +26,9 @@ export default class EnemyManager
                 this.enemies.push(new Enemy(this.scene, tile.x, tile.y));
             }
         });
+        this.enemies[0].destroying = true;
+        this.hsv = Phaser.Display.Color.HSVColorWheel();
+        this.enemies[0].sprite.tint = this.hsv[300].color;
     }
 
     add(tileX, tileY)
@@ -48,12 +51,12 @@ export default class EnemyManager
 
     getEnemyByTile(tile)
     {
-        //Maybe I'll change the origin later, remember to change that, dude.
+        //Maybe I'll change the origin later, remember to change that;
         var spriteX = this.scene.map.tileToWorldX(tile.x) + Constant.Tile_Size/2;
         var sprtieY = this.scene.map.tileToWorldY(tile.y) + Constant.Tile_Size/2;
         var foundEnemy = null;
         this.enemies.forEach(enemy => {
-            //Fix This is just a test factor.
+            //Fix, but this is just a test factor.
            if(Math.abs(enemy.sprite.x - spriteX) <= Constant.Tile_Size/2 && Math.abs(enemy.sprite.y - sprtieY) <=  Constant.Tile_Size/2)
            {
                 foundEnemy = enemy;
