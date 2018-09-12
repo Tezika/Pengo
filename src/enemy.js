@@ -21,6 +21,11 @@ export default class Enemy
         this._stopArea = null;
         this._timer = 0;
 
+        //Stun
+        this.stunned = false;
+        this.stunTime = 2000;
+        this.stunTimer = 0;
+
         //Push stuff
         this.pushing = false;
         this.pushingSpeed = 10;
@@ -68,7 +73,13 @@ export default class Enemy
 
     updateMovement(time)
     {
-        if (time > this._moveDuration + this._timer)
+        if(this.stunned)
+        {
+            this.stunned = false;
+            this.stunTimer = time;
+            this._timer = 0;
+        }
+        if (time > this._moveDuration + this._timer && time > this.stunTime + this.stunTimer)
         {
             switch ( this._moveDir)
             {
@@ -116,7 +127,12 @@ export default class Enemy
 
     stunEnemy()
     {
-        console.log("ENEMY STUNNNED");
+        this.stunned = true;
+        var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
+        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
+        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+        this.getRandomMoveDir();
+
         this.scene.tweens.timeline({
             targets: this.sprite,
             ease: 'Linear',

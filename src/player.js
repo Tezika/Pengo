@@ -110,10 +110,12 @@ export default class Player {
                     this.scene.wallManager.wallSprites.forEach(wall => {
                         if (xmov != 0) {
                             if (this.sprite.x + xmov == wall.x) {
-                                if(this.scene.isEnemyAt(this.sprite.x, wall.y))
-                                {
-                                    //var enemy = this.scene.getObjAt(this.sprite.x, wall.y);
-                                    //enemy.stunEnemy();
+                                if (this.scene.isEnemyAt(this.sprite.x, wall.y)) {
+                                    var tile = this.scene.map.getTileAtWorldXY(this.sprite.x, wall.y);
+                                    var enemy = this.scene.enemyManager.getEnemyByTile(tile);
+                                    if (enemy != null) {
+                                        enemy.stunEnemy();
+                                    }
                                 }
                                 this.scene.tweens.timeline({
                                     targets: wall,
@@ -142,10 +144,12 @@ export default class Player {
                             }
                         } else if (ymov != 0) {
                             if (this.sprite.y + ymov == wall.y) {
-                                if(this.scene.isEnemyAt(wall.x, this.sprite.y))
-                                {
-                                    //var enemy = this.scene.getObjAt(wall.x, this.sprite.y);
-                                    //enemy.stunEnemy();
+                                if (this.scene.isEnemyAt(wall.x, this.sprite.y)) {
+                                    var tile = this.scene.map.getTileAtWorldXY(wall.x, this.sprite.y);
+                                    var enemy = this.scene.enemyManager.getEnemyByTile(tile);
+                                    if (enemy != null) {
+                                        enemy.stunEnemy();
+                                    }
                                 }
                                 this.scene.tweens.timeline({
                                     targets: wall,
