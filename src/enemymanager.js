@@ -41,6 +41,7 @@ export default class EnemyManager
     {
         this.enemies.forEach(enemy => {
             enemy.update(time);
+            this.scene.physics.world.overlap(enemy.sprite, this.scene.player.sprite, this.overlapCallback.bind(this));
         });
     }
 
@@ -63,5 +64,13 @@ export default class EnemyManager
            } 
         });
         return foundEnemy;
+    }
+
+    overlapCallback()
+    {
+        if(this.scene.player != null)
+        {
+            this.scene.player.die();
+        }
     }
 }

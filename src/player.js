@@ -42,6 +42,17 @@ export default class Player {
         this.updateMovement(time);
     }
 
+    die()
+    {
+        this.respawn();
+    }
+
+    respawn()
+    {
+        this.sprite.x = this.scene.map.tileToWorldX(1)+ Constant.Tile_Size/2;
+        this.sprite.y= this.scene.map.tileToWorldY(1)+ Constant.Tile_Size/2;
+    }
+
     updateMovement(time) {
         var tw = 0;
         var th = 0;
