@@ -89,7 +89,6 @@ export default class Block {
                 {
                     var tile = this.scene.map.getTileAtWorldXY(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
                     var enemy = this.scene.enemyManager.getEnemyByTile(tile);
-                    //var enemy = this.scene.enemyManager.getEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
                     if(enemy != null && !enemy.pushing)
                     {
                         enemy.pushDir = this._moveDir;

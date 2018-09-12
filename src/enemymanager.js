@@ -60,19 +60,4 @@ export default class EnemyManager
         });
         return foundEnemy;
     }
-
-    getEnemyAt(worldX, worldY)
-    {
-        worldX+=32;
-        var enemy;
-        for(var i = 0; i < this.enemies.length; i++)
-        {
-            if(this.enemies[i].sprite.x >= worldX-10 && this.enemies[i].sprite.x <= worldX+10 && 
-                this.enemies[i].sprite.y >= worldY-10 && this.enemies[i].sprite.y <= worldY+10 )
-            {
-                enemy = this.enemies[i];
-            }
-        }
-        return enemy;
-    }
 }
