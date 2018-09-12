@@ -15,7 +15,7 @@ export default class Enemy
 
         //AI stuff
         this._moveDir = Direction.Left;
-        this._moveSpeed = 5;
+        this.moveSpeed = 5;
         this._moveDuration = 80;
         this._moveVelocity = null;
         this._stopArea = null;
@@ -73,19 +73,19 @@ export default class Enemy
             switch ( this._moveDir)
             {
                case Direction.Up:
-                   this._moveVelocity = new Phaser.Math.Vector2(0, -this._moveSpeed);
+                   this._moveVelocity = new Phaser.Math.Vector2(0, -this.moveSpeed);
                    this._stopArea = new Phaser.Math.Vector2(0, -this.scene.tileHeight);
                    break;
                case Direction.Down:
-                   this._moveVelocity = new Phaser.Math.Vector2(0, this._moveSpeed);
+                   this._moveVelocity = new Phaser.Math.Vector2(0, this.moveSpeed);
                    this._stopArea = new Phaser.Math.Vector2(0, this.scene.tileHeight);
                    break;
                case Direction.Left:
-                   this._moveVelocity = new Phaser.Math.Vector2(-this._moveSpeed, 0);
+                   this._moveVelocity = new Phaser.Math.Vector2(-this.moveSpeed, 0);
                    this._stopArea = new Phaser.Math.Vector2(-this.scene.tileWidth, 0);
                    break;
                case Direction.Right:
-                   this._moveVelocity = new Phaser.Math.Vector2(this._moveSpeed, 0);
+                   this._moveVelocity = new Phaser.Math.Vector2(this.moveSpeed, 0);
                    this._stopArea = new Phaser.Math.Vector2(this.scene.tileWidth, 0)
                    break;
                default:
