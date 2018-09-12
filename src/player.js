@@ -41,8 +41,8 @@ export default class Player {
     }
 
     updateMovement(time) {
-        var tw = this.scene.tileWidth;
-        var th = this.scene.tileHeight;
+        var tw = 0;
+        var th = 0;
 
         var repeatMoveDelay = 100;
 
@@ -51,39 +51,38 @@ export default class Player {
                 this.sprite.anims.play('downPlayer', true);
                 this.facing = Direction.Down;
                 this.sprite.flipX = false;
-                if (this.scene.isTileOpenAt(this.sprite.x, this.sprite.y + th)) {
-                    this.sprite.y += th;
-                    this.lastMoveTime = time;
-                }
+                th = this.scene.tileHeight;
             }
             else if (this.cursors.up.isDown) {
                 this.sprite.anims.play('downPlayer', true);
                 this.facing = Direction.Up;
                 this.sprite.flipX = false;
-                if (this.scene.isTileOpenAt(this.sprite.x, this.sprite.y - th)) {
-                    this.sprite.y -= th;
-                    this.lastMoveTime = time;
-                }
-            }
-
-            if (this.cursors.left.isDown) {
+                th = -this.scene.tileHeight;
+            }else if (this.cursors.left.isDown) {
                 this.sprite.anims.play('sidePlayer', true);
                 this.sprite.flipX = false;
                 this.facing = Direction.Left;
-                if (this.scene.isTileOpenAt(this.sprite.x - tw, this.sprite.y)) {
-                    this.sprite.x -= tw;
-                    this.lastMoveTime = time;
-                }
+                tw = -this.scene.tileWidth;
             }
             else if (this.cursors.right.isDown) {
                 this.sprite.anims.play('sidePlayer', true);
                 this.facing = Direction.Right;
                 this.sprite.flipX = true;
-                if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y)) {
-                    this.sprite.x += tw;
-                    this.lastMoveTime = time;
-                }
+                tw = this.scene.tileWidth;
             }
+
+            if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y + th)) {
+                this.lastMoveTime = time;
+                this.scene.tweens.add({
+                    targets: this.sprite,
+                    ease: 'Linear',
+                    duration: 99,
+                    x: this.sprite.x + tw,
+                    y: this.sprite.y + th
+                });
+            }
+
+            
         }
     }
 
