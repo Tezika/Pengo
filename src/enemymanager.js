@@ -53,7 +53,7 @@ export default class EnemyManager
         var foundEnemy = null;
         this.enemies.forEach(enemy => {
             //This is just a test factor.
-           if(Math.abs(enemy.sprite.x - spriteX) <= 2 * enemy.moveSpeed && Math.abs(enemy.sprite.y - sprtieY) <= 2 *enemy.moveSpeed)
+           if(Math.abs(enemy.sprite.x - spriteX) <= 2.5 * enemy.moveSpeed && Math.abs(enemy.sprite.y - sprtieY) <= 2.5 *enemy.moveSpeed)
            {
                 foundEnemy = enemy;
            } 
