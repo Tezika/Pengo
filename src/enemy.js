@@ -1,6 +1,6 @@
-
 import 'phaser';
 import { Direction } from './block';
+import { Constant } from './game';
 
 export default class Enemy
 {
@@ -10,8 +10,8 @@ export default class Enemy
         this.sprite = scene.physics.add.sprite(0, 0, "pengs", 0);
         this.sprite.scaleX = .5;
         this.sprite.scaleY = .5;
-        this.sprite.x = this.scene.map.tileToWorldX(tileX)+16;
-        this.sprite.y= this.scene.map.tileToWorldY(tileY)+16;
+        this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size/2;
+        this.sprite.y= this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size/2;
 
         //AI stuff
         this._moveDir = Direction.Left;
@@ -102,8 +102,8 @@ export default class Enemy
              else
              {
                  var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                 this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
-                 this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+                 this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
+                 this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
                  this.getRandomMoveDir();
              }
         }

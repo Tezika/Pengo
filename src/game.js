@@ -4,6 +4,11 @@ import  BlockManager from './blockmanager.js'
 import Enemy from './enemy.js';
 import EnemyManager from './enemymanager.js';
 
+export const Constant = 
+{
+    Tile_Size: 32
+}
+
 export default class GameScene extends Phaser.Scene
 {
     constructor()

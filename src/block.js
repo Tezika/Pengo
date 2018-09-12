@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import EnemyManager from "./enemymanager";
+import { Constant } from "./game";
 
 //Export a enum
 export const Direction = {
@@ -24,8 +25,8 @@ export default class Block {
             this.destructable = true;
         }
 
-        this.sprite.x = this.scene.map.tileToWorldX(tile.x) + 16;
-        this.sprite.y = this.scene.map.tileToWorldY(tile.y) + 16;
+        this.sprite.x = this.scene.map.tileToWorldX(tile.x) + Constant.Tile_Size/2;
+        this.sprite.y = this.scene.map.tileToWorldY(tile.y) + Constant.Tile_Size/2;
         this._moveSpeed = 10;
         this._moveDuration = 20;
         this._move = false;
@@ -88,6 +89,7 @@ export default class Block {
                 if(this.scene.isEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
                 {
                     var tile = this.scene.map.getTileAtWorldXY(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
+                    console.log("Check the enemy in " + tile.x + " " + tile.y);
                     var enemy = this.scene.enemyManager.getEnemyByTile(tile);
                     if(enemy != null && !enemy.pushing)
                     {
