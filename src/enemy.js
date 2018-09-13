@@ -31,6 +31,15 @@ export default class Enemy {
         this.pushDir = Direction.Left;
         this.pusher = null;
         this.destroying = false;
+        
+        this.scene.anims.create({
+            key: 'enemyFront',
+            frames: this.scene.anims.generateFrameNumbers('enemyFront', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.sprite.anims.play('enemyFront', true);
     }
 
     update(time) {
