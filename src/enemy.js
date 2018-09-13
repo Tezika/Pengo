@@ -92,7 +92,7 @@ export default class Enemy
                    break;
            }
 
-            //check whether the enemys to stop or not
+            //check whether the enemy needs to stop or not
             if (this.scene.isTileOpenAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
              {
                 this.sprite.x += this._moveVelocity.x;
@@ -101,9 +101,9 @@ export default class Enemy
              }
              else
              {
-                 var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                 this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
-                 this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+                //  var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
+                //  this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
+                //  this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
                  this.getRandomMoveDir();
              }
         }

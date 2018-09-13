@@ -6,7 +6,7 @@ export default class Player
     constructor(scene, tileX, tileY)
     {
         this.scene = scene;
-        this.sprite = scene.physics.add.sprite(0, 0, "player", 0);
+        this.sprite = scene.physics.add.sprite(0, 0, "player", 0)
         this.sprite.scaleX = .5;
         this.sprite.scaleY = .5;
         this.sprite.x = this.scene.map.tileToWorldX(tileX)+16;
