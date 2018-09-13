@@ -28,7 +28,6 @@ export default class Block {
             this.special = true;
             this.destructable = false;
             this.sprite.anims.play('wisp');
-
         }
         else {
             this.sprite = this.scene.physics.add.sprite(0, 0, "cage", 0);

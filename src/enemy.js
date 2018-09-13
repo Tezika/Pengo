@@ -51,6 +51,13 @@ export default class Enemy {
             repeat: -1
         });
 
+        this.scene.anims.create({
+            key: 'enemyStun',
+            frames: this.scene.anims.generateFrameNumbers('enemyStun', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        
         this.sprite.anims.play('enemyDown', true);
     }
 
@@ -184,8 +191,8 @@ export default class Enemy {
             },
             {
                 y: this.sprite.y,
-            }]
-
+            }],
+            onStart: this.onStunStart()
         });
     }
 
@@ -209,4 +216,12 @@ export default class Enemy {
                 break;
         }
     }
+
+    onStunStart()
+    {
+        console.log("The stun is starting.");
+        console.log(this.sprite.anims);
+        this.sprite.anims.play('enemyStun', true);
+    }
+
 }

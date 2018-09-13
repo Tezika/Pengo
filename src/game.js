@@ -37,13 +37,14 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('upPlayer','assets/upPlayer.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('wisp', 'assets/wisp.png', {frameWidth: 64, frameHeight: 64});
 
-        //Enemy 
+        //Enemy animation stuff
         this.load.spritesheet('enemyFront','assets/enemyFront.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('enemySide','assets/enemySide.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('enemyBack','assets/enemyBack.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('enemyStun','assets/enemyStun.png', {frameWidth: 64, frameHeight: 64});
 
         this.blockManager = new BlockManager(this);
-        this.enemyManager = new EnemyManager(this);
+         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
     }
 
