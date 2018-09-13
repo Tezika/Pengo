@@ -18,6 +18,7 @@ export default class Player {
         this.lastPushTime = 0;
         this.lastStunTime = 0;
         this.facing = Direction.Down;
+        this.tween = null;
 
         this.spaceBar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
@@ -33,6 +34,13 @@ export default class Player {
             frameRate: 10,
             repeat: -1
         });
+        
+        this.scene.anims.create({
+            key: 'upPlayer',
+            frames: this.scene.anims.generateFrameNumbers('upPlayer', { start: 0, end: 12 }),
+            frameRate: 10,
+            repeat: -1
+        });
 
         this.sprite.anims.play('downPlayer', true);
     }
@@ -40,6 +48,21 @@ export default class Player {
     update(time) {
         this.push(time);
         this.updateMovement(time);
+    }
+
+    die()
+    {
+        this.respawn();
+    }
+
+    respawn()
+    {
+        if(this.tween != null)
+        {
+            this.tween.stop();
+        }
+        this.sprite.x = this.scene.map.tileToWorldX(1)+ Constant.Tile_Size/2;
+        this.sprite.y= this.scene.map.tileToWorldY(1)+ Constant.Tile_Size/2;
     }
 
     updateMovement(time) {
@@ -56,7 +79,7 @@ export default class Player {
                 th = this.scene.tileHeight;
             }
             else if (this.cursors.up.isDown) {
-                this.sprite.anims.play('downPlayer', true);
+                this.sprite.anims.play('upPlayer', true);
                 this.facing = Direction.Up;
                 this.sprite.flipX = false;
                 th = -this.scene.tileHeight;
@@ -75,15 +98,13 @@ export default class Player {
 
             if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y + th)) {
                 this.lastMoveTime = time;
-                // this.scene.tweens.add({
-                //     targets: this.sprite,
-                //     ease: 'Linear',
-                //     duration: 99,
-                //     x: this.sprite.x + tw,
-                //     y: this.sprite.y + th
-                // });
-                this.sprite.x += tw;
-                this.sprite.y += th;
+                this.tween = this.scene.tweens.add({
+                     targets: this.sprite,
+                     ease: 'Linear',
+                     duration: 99,
+                     x: this.sprite.x + tw,
+                     y: this.sprite.y + th
+                 });
             }
 
             

@@ -41,7 +41,7 @@ export default class EnemyManager
     {
         this.enemies.forEach(enemy => {
             enemy.update(time);
-            this.scene.physics.world.overlap(enemy.sprite, this.scene.player.sprite, this.colPlayerCallback.bind(this));
+            this.scene.physics.world.overlap(enemy.sprite, this.scene.player.sprite, this.overlapCallback.bind(this));
         });
     }
 
@@ -66,9 +66,9 @@ export default class EnemyManager
         return foundEnemy;
     }
 
-    colPlayerCallback(obj1, obj2)
+    overlapCallback()
     {
-        if( typeof this.scene.player !== "undefined" )
+        if(this.scene.player != null)
         {
             this.scene.player.die();
         }

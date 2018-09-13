@@ -89,7 +89,7 @@ export default class Block {
                 if(this.scene.isEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
                 {
                     var tile = this.scene.map.getTileAtWorldXY(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
-                    console.log("Check the enemy in " + tile.x + " " + tile.y);
+                    //console.log("Check the enemy in " + tile.x + " " + tile.y);
                     var enemy = this.scene.enemyManager.getEnemyByTile(tile);
                     if(enemy != null && !enemy.pushing)
                     {
