@@ -7,8 +7,6 @@ export default class Enemy {
     constructor(scene, tileX, tileY) {
         this.scene = scene;
         this.sprite = scene.physics.add.sprite(2, 3, "pengs", 0);
-        this.sprite.scaleX = .5;
-        this.sprite.scaleY = .5;
         this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size/2;
         this.sprite.y= this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size/2;
 
@@ -138,17 +136,16 @@ export default class Enemy {
                     this._timer = time;
                 }
                 else {
-
                     var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
-                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
+                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
                     this.getRandomMoveDir();
                 }
             }
             else {
                 var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
-                this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+                this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
+                this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
                 this.getRandomMoveDir();
             }
         }
@@ -162,8 +159,8 @@ export default class Enemy {
     stunEnemy() {
         this.stunned = true;
         var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
-        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
+        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
         this.getRandomMoveDir();
 
         this.scene.tweens.timeline({

@@ -22,7 +22,7 @@ export default class EnemyManager
         this.scene.map.forEachTile(tile => {
             if(tile.properties.enemy)
             {
-                tile.index = 1;
+                tile.index = Constant.Empty_Tile_Index;
                 this.enemies.push(new Enemy(this.scene, tile.x, tile.y));
             }
         });

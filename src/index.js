@@ -4,12 +4,12 @@ import GameScene from './game.js'
 
 var config = {
     type: Phaser.WEBGL,
-    width: 800,
-    height: 600,
+    width: 960,
+    height: 640,
     backgroundColor: '#000000',
     parent: 'phaser-example',
-    width: 480,
-    height: 320,
+    width: 960,
+    height: 640,
     physics: {
         default: 'arcade',
         arcade: {

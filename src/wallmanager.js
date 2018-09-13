@@ -1,6 +1,7 @@
 import 'phaser'
 import Block from './block';
 import { Scene } from "phaser";
+import { Constant } from './game';
 
 export default class WallManager 
 {
@@ -38,10 +39,8 @@ export default class WallManager
                     var sprite = this.scene.physics.add.sprite(0, 0, "Skull Penguin", 0);
                 }
                 sprite.name = "wall";
-                sprite.x = this.scene.map.tileToWorldX(block.x) + 16;
-                sprite.y = this.scene.map.tileToWorldY(block.y) + 16;
-                sprite.scaleX = .5;
-                sprite.scaleY = .5;
+                sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size/2;
+                sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size/2;
                 sprite.angle = (Math.random() * 360);
                 this.wallSprites.push(sprite);
             }

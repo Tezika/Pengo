@@ -13,14 +13,25 @@ export const Direction = {
 export default class Block {
     constructor(scene, tile) {
         this.scene = scene;
+
         //add the block to the game scene's physics management.
         if (tile.properties.special) {
+
+            this.scene.anims.create({
+                key: 'wisp',
+                frames: this.scene.anims.generateFrameNumbers('wisp', { start: 0, end: 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
+    
             this.sprite = this.scene.physics.add.sprite(0, 0, "blockSpecial", 1);
             this.special = true;
             this.destructable = false;
+            this.sprite.anims.play('wisp');
+
         }
         else {
-            this.sprite = this.scene.physics.add.sprite(0, 0, "block", 0);
+            this.sprite = this.scene.physics.add.sprite(0, 0, "cage", 0);
             this.special = false;
             this.destructable = true;
         }
@@ -80,8 +91,8 @@ export default class Block {
                 {
                     //if the next tile is enemy, then it pushes the enemy
                     var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + 16;
-                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + 16;
+                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
+                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
                     this._move = false;
                 } 
                    
@@ -89,7 +100,6 @@ export default class Block {
                 if(this.scene.isEnemyAt(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y))
                 {
                     var tile = this.scene.map.getTileAtWorldXY(this.sprite.x + this._stopArea.x, this.sprite.y + this._stopArea.y);
-                    //console.log("Check the enemy in " + tile.x + " " + tile.y);
                     var enemy = this.scene.enemyManager.getEnemyByTile(tile);
                     if(enemy != null && !enemy.pushing)
                     {
@@ -102,6 +112,7 @@ export default class Block {
         }
         if(this.special)
         {
+
             if (!this.scene.isTileOpenAt(this.sprite.x + this.scene.tileWidth, this.sprite.y)
                 || !this.scene.isTileOpenAt(this.sprite.x - this.scene.tileWidth, this.sprite.y)
                 || !this.scene.isTileOpenAt(this.sprite.x, this.sprite.y + this.scene.tileHeight)
@@ -117,7 +128,6 @@ export default class Block {
                     up != null && up.special ||
                     right != null && right.special)
                 {
-                    this.sprite.anims.play('specialActive', true);
                     if((down != null && down.special && up != null && up.special) 
                     || (left != null && left.special && right != null && right.special) && !this.scene.wallManager.wallParty)
                     {
@@ -127,7 +137,6 @@ export default class Block {
                     }
                 }
                 else{
-                    this.sprite.anims.stopOnRepeat();
                 }
             }
         }

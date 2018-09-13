@@ -7,7 +7,8 @@ import WallManager from './wallmanager.js';
 
 export const Constant = 
 {
-    Tile_Size: 32
+    Tile_Size: 64,
+    Empty_Tile_Index: 132
 }
 
 export default class GameScene extends Phaser.Scene
@@ -20,9 +21,8 @@ export default class GameScene extends Phaser.Scene
     preload()
     {
         //load the tiles
-        this.load.tilemapTiledJSON('map', 'assets/tilemap/test3.json');
+        this.load.tilemapTiledJSON('map', 'assets/tilemap/pengo.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
-        this.load.image('block','assets/block.png');
         this.load.image('pengs', 'assets/pengs.png');
         this.load.image('cage', 'assets/cage.png');
         this.titlesetName = 'snowWIP';
@@ -35,6 +35,7 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('sidePlayer','assets/sidePlayer.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('downPlayer','assets/downPlayer.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('upPlayer','assets/upPlayer.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('wisp', 'assets/wisp.png', {frameWidth: 64, frameHeight: 64});
 
         //Enemy 
         this.load.spritesheet('enemyFront','assets/enemyFront.png', {frameWidth: 64, frameHeight: 64});
@@ -48,7 +49,7 @@ export default class GameScene extends Phaser.Scene
 
     create()
     {
-        this.bg = this.add.tileSprite(240, 160, 480, 320,'background');
+        this.bg = this.add.tileSprite(480, 320, 960, 640,'background');
 
         this.map = this.make.tilemap({ key: 'map' });
         // The first parameter is the name of the tileset in Tiled and the second parameter is the key
@@ -61,6 +62,7 @@ export default class GameScene extends Phaser.Scene
 
         this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
+        console.log(this.tileWidth + " " +  this.tileHeight);
  
         //create the player
         this.player = new Player(this, 1, 1);
@@ -75,11 +77,6 @@ export default class GameScene extends Phaser.Scene
         this.wallManager.create();
 
         this.backgroundLayer.setCollision([154]);
-
-      
-                         
-        // this.bg = this.add.sprite(this.config.width / 2, this.config.height / 2, 'background');
-        // this.bg.setDisplaySize(this.config.width, this.config.height);
     }
 
     update(time, delta)

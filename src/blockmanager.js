@@ -1,6 +1,7 @@
 import 'phaser'
 import Block from './block';
 import { Scene } from "phaser";
+import { Constant } from './game';
 
 export default class BlockManager 
 {
@@ -22,7 +23,7 @@ export default class BlockManager
         this.scene.map.forEachTile(block => {
             if(block.properties.block)
             {
-                block.index = 1;
+                block.index = Constant.Empty_Tile_Index;
                 this.blocks.push(new Block(this.scene, block));
             }
         });
