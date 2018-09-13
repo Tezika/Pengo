@@ -22,4 +22,10 @@ var config = {
 
 var game = new Phaser.Game(config);
 
+//scale the whole things twice(tilemap)
+//timer
+//put the fire into the corner
+
+//960 x 640
+
 

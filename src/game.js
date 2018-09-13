@@ -24,15 +24,22 @@ export default class GameScene extends Phaser.Scene
         this.load.image('tiles','assets/tilemap/snowWIP.png');
         this.load.image('block','assets/block.png');
         this.load.image('pengs', 'assets/pengs.png');
+        this.load.image('cage', 'assets/cage.png');
         this.titlesetName = 'snowWIP';
 
         this.load.image('Skull','assets/Skull.png');
         this.load.image('Skull Penguin','assets/Skull Penguin.png');
-        this.load.spritesheet('enemyFront','assets/enemyFront.png', {frameWidth: 64, frameHeight: 64});
+        this.load.image('background', 'assets/background_test.png');
+      
         this.load.spritesheet('blockSpecial','assets/blockSpecial.png', {frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('sidePlayer','assets/sidePlayer.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('downPlayer','assets/downPlayer.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('upPlayer','assets/upPlayer.png', {frameWidth: 64, frameHeight: 64});
+
+        //Enemy 
+        this.load.spritesheet('enemyFront','assets/enemyFront.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('enemySide','assets/enemySide.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('enemyBack','assets/enemyBack.png', {frameWidth: 64, frameHeight: 64});
 
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
@@ -41,6 +48,8 @@ export default class GameScene extends Phaser.Scene
 
     create()
     {
+        this.bg = this.add.tileSprite(240, 160, 480, 320,'background');
+
         this.map = this.make.tilemap({ key: 'map' });
         // The first parameter is the name of the tileset in Tiled and the second parameter is the key
         // of the tileset image used when loading the file in preload.
@@ -66,6 +75,11 @@ export default class GameScene extends Phaser.Scene
         this.wallManager.create();
 
         this.backgroundLayer.setCollision([154]);
+
+      
+                         
+        // this.bg = this.add.sprite(this.config.width / 2, this.config.height / 2, 'background');
+        // this.bg.setDisplaySize(this.config.width, this.config.height);
     }
 
     update(time, delta)

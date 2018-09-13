@@ -98,16 +98,16 @@ export default class Player {
 
             if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y + th)) {
                 this.lastMoveTime = time;
-                this.tween = this.scene.tweens.add({
-                     targets: this.sprite,
-                     ease: 'Linear',
-                     duration: 99,
-                     x: this.sprite.x + tw,
-                     y: this.sprite.y + th
-                 });
+                // this.tween = this.scene.tweens.add({
+                //      targets: this.sprite,
+                //      ease: 'Linear',
+                //      duration: 99,
+                //      x: this.sprite.x + tw,
+                //      y: this.sprite.y + th
+                //  });
+                this.sprite.x += tw;
+                this.sprite.y += th;
             }
-
-            
         }
     }
 
@@ -158,16 +158,6 @@ export default class Player {
                 this.lastPushTime = time;
             }
         }
-    }
-
-    die() {
-        this.respawn();
-    }
-
-    respawn()
-    {
-        this.sprite.x = this.scene.map.tileToWorldX(1) + Constant.Tile_Size/2;
-        this.sprite.y= this.scene.map.tileToWorldY(1) + Constant.Tile_Size/2;
     }
 
     WallStunning(time, xmov, ymov)

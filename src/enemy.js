@@ -13,7 +13,7 @@ export default class Enemy {
         this.sprite.y= this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size/2;
 
         //AI stuff
-        this._moveDir = Direction.Left;
+        this._moveDir = Direction.Down;
         this.moveSpeed = 5;
         this._moveDuration = 80;
         this._moveVelocity = null;
@@ -33,13 +33,27 @@ export default class Enemy {
         this.destroying = false;
         
         this.scene.anims.create({
-            key: 'enemyFront',
+            key: 'enemyDown',
             frames: this.scene.anims.generateFrameNumbers('enemyFront', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1
         });
 
-        this.sprite.anims.play('enemyFront', true);
+        this.scene.anims.create({
+            key: 'enemySide',
+            frames: this.scene.anims.generateFrameNumbers('enemySide', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.scene.anims.create({
+            key: 'enemyUp',
+            frames: this.scene.anims.generateFrameNumbers('enemyBack', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.sprite.anims.play('enemyDown', true);
     }
 
     update(time) {
@@ -85,18 +99,26 @@ export default class Enemy {
                 case Direction.Up:
                     this._moveVelocity = new Phaser.Math.Vector2(0, -this.moveSpeed);
                     this._stopArea = new Phaser.Math.Vector2(0, -this.scene.tileHeight);
+                    this.sprite.anims.play('enemyUp', true);
+                    this.sprite.flipX = false;
                     break;
                 case Direction.Down:
                     this._moveVelocity = new Phaser.Math.Vector2(0, this.moveSpeed);
                     this._stopArea = new Phaser.Math.Vector2(0, this.scene.tileHeight);
+                    this.sprite.anims.play('enemyDown', true);
+                    this.sprite.flipX = false;
                     break;
                 case Direction.Left:
                     this._moveVelocity = new Phaser.Math.Vector2(-this.moveSpeed, 0);
                     this._stopArea = new Phaser.Math.Vector2(-this.scene.tileWidth, 0);
+                    this.sprite.anims.play('enemySide', true);
+                    this.sprite.flipX = false;
                     break;
                 case Direction.Right:
                     this._moveVelocity = new Phaser.Math.Vector2(this.moveSpeed, 0);
-                    this._stopArea = new Phaser.Math.Vector2(this.scene.tileWidth, 0)
+                    this._stopArea = new Phaser.Math.Vector2(this.scene.tileWidth, 0);
+                    this.sprite.anims.play('enemySide', true);
+                    this.sprite.flipX = true;
                     break;
                 default:
                     break;
