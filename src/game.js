@@ -31,10 +31,12 @@ export default class GameScene extends Phaser.Scene
         this.load.image('Skull Penguin','assets/Skull Penguin.png');
         this.load.image('background', 'assets/background_test.png');
       
-        this.load.spritesheet('blockSpecial','assets/blockSpecial.png', {frameWidth: 32, frameHeight: 32});
+        // Player animations
         this.load.spritesheet('sidePlayer','assets/sidePlayer.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('downPlayer','assets/downPlayer.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('upPlayer','assets/upPlayer.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('deathPlayer','assets/deathPlayer.png', {frameWidth: 64, frameHeight: 64});
+
         this.load.spritesheet('wisp', 'assets/wisp.png', {frameWidth: 64, frameHeight: 64});
 
         //Enemy animation stuff
@@ -42,6 +44,7 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('enemySide','assets/enemySide.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('enemyBack','assets/enemyBack.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('enemyStun','assets/enemyStun.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('enemyDeath','assets/enemyDeath.png', {frameWidth: 64, frameHeight: 64});
 
         this.blockManager = new BlockManager(this);
          this.enemyManager = new EnemyManager(this);
@@ -63,7 +66,6 @@ export default class GameScene extends Phaser.Scene
 
         this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
-        console.log(this.tileWidth + " " +  this.tileHeight);
  
         //create the player
         this.player = new Player(this, 1, 1);

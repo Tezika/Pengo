@@ -6,7 +6,7 @@ import { Constant } from './game';
 export default class Enemy {
     constructor(scene, tileX, tileY) {
         this.scene = scene;
-        this.sprite = scene.physics.add.sprite(2, 3, "pengs", 0);
+        this.sprite = scene.physics.add.sprite(300, 300, "pengs", 0);
         this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size/2;
         this.sprite.y= this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size/2;
 
@@ -30,35 +30,8 @@ export default class Enemy {
         this.pusher = null;
         this.destroying = false;
         
-        this.scene.anims.create({
-            key: 'enemyDown',
-            frames: this.scene.anims.generateFrameNumbers('enemyFront', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.scene.anims.create({
-            key: 'enemySide',
-            frames: this.scene.anims.generateFrameNumbers('enemySide', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.scene.anims.create({
-            key: 'enemyUp',
-            frames: this.scene.anims.generateFrameNumbers('enemyBack', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.scene.anims.create({
-            key: 'enemyStun',
-            frames: this.scene.anims.generateFrameNumbers('enemyStun', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        
         this.sprite.anims.play('enemyDown', true);
+        this.sprite.on('animationcomplete', this.deathComplete, this);
     }
 
     update(time) {
@@ -159,8 +132,16 @@ export default class Enemy {
     }
 
     destroy() {
-        this.scene.enemyManager.remove(this);
-        this.sprite.destroy();
+        this.sprite.anims.play('enemyDeath', true);
+    }
+
+    deathComplete(animation, frame)
+    {
+        if(animation.key == "enemyDeath")
+        {
+            this.scene.enemyManager.remove(this);
+            this.sprite.destroy();
+        }
     }
 
     stunEnemy() {
@@ -219,8 +200,6 @@ export default class Enemy {
 
     onStunStart()
     {
-        console.log("The stun is starting.");
-        console.log(this.sprite.anims);
         this.sprite.anims.play('enemyStun', true);
     }
 
