@@ -19,6 +19,40 @@ export default class EnemyManager
     {
         this.enemies = [];
 
+        this.scene.anims.create({
+            key: 'enemyDown',
+            frames: this.scene.anims.generateFrameNumbers('enemyFront', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.scene.anims.create({
+            key: 'enemySide',
+            frames: this.scene.anims.generateFrameNumbers('enemySide', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.scene.anims.create({
+            key: 'enemyUp',
+            frames: this.scene.anims.generateFrameNumbers('enemyBack', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.scene.anims.create({
+            key: 'enemyStun',
+            frames: this.scene.anims.generateFrameNumbers('enemyStun', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.scene.anims.create({
+            key: 'enemyDeath',
+            frames: this.scene.anims.generateFrameNumbers('enemyDeath', { start: 0, end: 2 }),
+            frameRate: 5
+        });
+
         this.scene.map.forEachTile(tile => {
             if(tile.properties.enemy)
             {
@@ -66,7 +100,7 @@ export default class EnemyManager
         return foundEnemy;
     }
 
-    overlapCallback()
+    overlapCallback(obj1, obj2)
     {
         if(this.scene.player != null)
         {

@@ -39,8 +39,15 @@ export default class Player {
             frameRate: 10,
             repeat: -1
         });
+        
+        this.scene.anims.create({
+            key: 'deathPlayer',
+            frames: this.scene.anims.generateFrameNumbers('deathPlayer', { start: 0, end: 13 }),
+            frameRate: 10
+        });
 
         this.sprite.anims.play('downPlayer', true);
+        this.sprite.on('animationcomplete', this.deathComplete, this);
     }
 
     update(time) {
@@ -48,9 +55,18 @@ export default class Player {
         this.updateMovement(time);
     }
 
+    deathComplete(animation, frame)
+    {
+        if(animation.key == "deathPlayer")
+        {
+            this.respawn();
+        }
+    }
+
     die()
     {
-        this.respawn();
+        this.sprite.anims.play('deathPlayer', true);
+        this.lastMoveTime = Number.MAX_SAFE_INTEGER;
     }
 
     respawn()
@@ -61,13 +77,15 @@ export default class Player {
         }
         this.sprite.x = this.scene.map.tileToWorldX(1)+ Constant.Tile_Size/2;
         this.sprite.y= this.scene.map.tileToWorldY(1)+ Constant.Tile_Size/2;
+        this.sprite.anims.play('downPlayer', true);
+        this.lastMoveTime = 0;
     }
 
     updateMovement(time) {
         var tw = 0;
         var th = 0;
 
-        var repeatMoveDelay = 100;
+        var repeatMoveDelay = 110;
 
         if (time > this.lastMoveTime + repeatMoveDelay) {
             if (this.cursors.down.isDown) {
@@ -96,15 +114,13 @@ export default class Player {
 
             if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y + th)) {
                 this.lastMoveTime = time;
-                // this.tween = this.scene.tweens.add({
-                //      targets: this.sprite,
-                //      ease: 'Linear',
-                //      duration: 99,
-                //      x: this.sprite.x + tw,
-                //      y: this.sprite.y + th
-                //  });
-                this.sprite.x += tw;
-                this.sprite.y += th;
+                 this.tween = this.scene.tweens.add({
+                      targets: this.sprite,
+                      ease: 'Linear',
+                      duration: 80,
+                      x: this.sprite.x + tw,
+                      y: this.sprite.y + th
+                });
             }
         }
     }

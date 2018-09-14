@@ -45,13 +45,6 @@ export default class WallManager
                 this.wallSprites.push(sprite);
             }
         });
-        
-        this.scene.anims.create({
-            key: 'specialActive',
-            frames: this.scene.anims.generateFrameNumbers('blockSpecial', { start: 0, end: 1 }),
-            frameRate: 10,
-            repeat: -1
-        });
     }
 
     update(time)

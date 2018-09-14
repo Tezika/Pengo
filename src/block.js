@@ -16,15 +16,8 @@ export default class Block {
 
         //add the block to the game scene's physics management.
         if (tile.properties.special) {
-
-            this.scene.anims.create({
-                key: 'wisp',
-                frames: this.scene.anims.generateFrameNumbers('wisp', { start: 0, end: 3 }),
-                frameRate: 10,
-                repeat: -1
-            });
     
-            this.sprite = this.scene.physics.add.sprite(0, 0, "blockSpecial", 1);
+            this.sprite = this.scene.physics.add.sprite(0, 0, "blockSpecial", 0);
             this.special = true;
             this.destructable = false;
             this.sprite.anims.play('wisp');
