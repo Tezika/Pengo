@@ -75,8 +75,8 @@ export default class Player {
         {
             this.tween.stop();
         }
-        this.sprite.x = this.scene.map.tileToWorldX(1)+ Constant.Tile_Size/2;
-        this.sprite.y= this.scene.map.tileToWorldY(1)+ Constant.Tile_Size/2;
+        this.sprite.x = this.scene.map.tileToWorldX(2)+ Constant.Tile_Size/2;
+        this.sprite.y= this.scene.map.tileToWorldY(2)+ Constant.Tile_Size/2;
         this.sprite.anims.play('downPlayer', true);
         this.lastMoveTime = 0;
     }

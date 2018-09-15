@@ -25,24 +25,66 @@ export default class WallManager
         this.partyDuration = 3000;
         this.hsv = Phaser.Display.Color.HSVColorWheel();
 
+        this.scene.anims.create({
+            key: 'enemyCage',
+            frames: this.scene.anims.generateFrameNumbers('enemyCage', { start: 0, end: 1 }),
+            frameRate: 3,
+            repeat: -1
+        });
+        this.scene.anims.create({
+            key: 'torch',
+            frames: this.scene.anims.generateFrameNumbers('torch', { start: 0, end: 3 }),
+            frameRate: 7,
+            repeat: -1
+        });
+        
         this.scene.map.forEachTile(block => {
-            if(block.properties.wall)
+            if(block.properties.skull)
             {
                 block.index = 154;
-
                 if(Math.random() > .5)
                 {
-                    var sprite = this.scene.physics.add.sprite(0, 0, "Skull", 0);
+                    var sprite = this.scene.physics.add.sprite(0, 0, "Skull Penguin", 0);
                 }
                 else
                 {
-                    var sprite = this.scene.physics.add.sprite(0, 0, "Skull Penguin", 0);
+                    var sprite = this.scene.physics.add.sprite(0, 0, "Skull", 0);
                 }
                 sprite.name = "wall";
                 sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size/2;
                 sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size/2;
                 sprite.angle = (Math.random() * 360);
+            }
+            if(block.properties.wall)
+            {
+                block.index = 154;
+
+                var sprite = this.scene.physics.add.sprite(0, 0, "fire", 0);
+                sprite.name = "wall";
+                sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size/2;
+                sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size/2;
+                sprite.angle = (Math.random() * 360);
                 this.wallSprites.push(sprite);
+            }
+            if(block.properties.torch)
+            {
+                block.index = 154;
+
+                var sprite = this.scene.physics.add.sprite(0, 0, "torch", 0);
+                sprite.name = "wall";
+                sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size/2;
+                sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size/2;
+                sprite.anims.play('torch', true);
+            }
+            if(block.properties.cage)
+            {
+                block.index = 154;
+
+                var sprite = this.scene.physics.add.sprite(0, 0, "enemyCage", 0);
+                sprite.name = "wall";
+                sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size/2;
+                sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size/2;
+                sprite.anims.play('enemyCage', true);
             }
         });
     }
