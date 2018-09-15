@@ -7,8 +7,9 @@ export default class Enemy {
     constructor(scene, tileX, tileY) {
         this.scene = scene;
         this.sprite = scene.physics.add.sprite(300, 300, "pengs", 0);
-        this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size/2;
-        this.sprite.y= this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size/2;
+        this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size / 2;
+        this.sprite.y = this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size / 2;
+        this.sprite.depth = 1;
 
         //AI stuff
         this._moveDir = Direction.Down;
@@ -28,42 +29,51 @@ export default class Enemy {
         this.pushingSpeed = 10;
         this.pushDir = Direction.Left;
         this.pusher = null;
+        this.death = false;
         this.destroying = false;
-        
+
         this.sprite.anims.play('enemyDown', true);
         this.sprite.on('animationcomplete', this.deathComplete, this);
     }
 
     update(time) {
-        if (this.pushing) {
-            this.updatePushing();
-        }
-        else {
-            this.updateMovement(time);
+        if (!this.death) {
+            if (this.pushing) {
+                this.updatePushing();
+            }
+            else {
+                this.updateMovement(time);
+            }
         }
     }
 
     updatePushing() {
+        var x = this.sprite.x;
+        var y = this.sprite.y;
         switch (this.pushDir) {
             case Direction.Up:
-                this.sprite.y = this.pusher.sprite.y - this.scene.tileHeight;
+                y = this.pusher.sprite.y - this.scene.tileHeight;
                 break;
             case Direction.Down:
-                this.sprite.y = this.pusher.sprite.y + this.scene.tileHeight;
+                y = this.pusher.sprite.y + this.scene.tileHeight;
                 break;
             case Direction.Left:
-                this.sprite.x = this.pusher.sprite.x - this.scene.tileWidth;
+                x = this.pusher.sprite.x - this.scene.tileWidth;
                 break;
             case Direction.Right:
-                this.sprite.x = this.pusher.sprite.x + this.scene.tileWidth;
+                x = this.pusher.sprite.x + this.scene.tileWidth;
                 break;
             default:
                 break;
         }
+
         //when the enemy died.
-        if (!this.scene.isTileOpenAt(this.sprite.x, this.sprite.y)) {
+        if (!this.scene.isTileOpenAt(x, y)) {
             this.destroy();
         }
+
+        this.sprite.x = x;
+        this.sprite.y = y;
     }
 
     updateMovement(time) {
@@ -117,15 +127,15 @@ export default class Enemy {
                 }
                 else {
                     var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
-                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
+                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size / 2;
+                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size / 2;
                     this.getRandomMoveDir();
                 }
             }
             else {
                 var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
-                this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
+                this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size / 2;
+                this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size / 2;
                 this.getRandomMoveDir();
             }
         }
@@ -133,12 +143,11 @@ export default class Enemy {
 
     destroy() {
         this.sprite.anims.play('enemyDeath', true);
+        this.death = true;
     }
 
-    deathComplete(animation, frame)
-    {
-        if(animation.key == "enemyDeath")
-        {
+    deathComplete(animation, frame) {
+        if (animation.key == "enemyDeath") {
             this.scene.enemyManager.remove(this);
             this.sprite.destroy();
         }
@@ -147,8 +156,8 @@ export default class Enemy {
     stunEnemy() {
         this.stunned = true;
         var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
-        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
+        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size / 2;
+        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size / 2;
         this.getRandomMoveDir();
 
         this.scene.tweens.timeline({
@@ -198,8 +207,7 @@ export default class Enemy {
         }
     }
 
-    onStunStart()
-    {
+    onStunStart() {
         this.sprite.anims.play('enemyStun', true);
     }
 

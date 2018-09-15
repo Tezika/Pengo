@@ -29,9 +29,13 @@ export default class GameScene extends Phaser.Scene
         this.load.image('cage', 'assets/cage.png');
         this.titlesetName = 'snowWIP';
 
+        // Wall assets
         this.load.image('Skull','assets/Skull.png');
         this.load.image('Skull Penguin','assets/Skull Penguin.png');
-        this.load.image('background', 'assets/background_test.png');
+        this.load.image('fire','assets/fireEye.png');
+        this.load.spritesheet('enemyCage','assets/enemyCage.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('torch','assets/torch.png', {frameWidth: 64, frameHeight: 64});
+        this.load.image('background', 'assets/background_final.png');
       
         // Player animations
         this.load.spritesheet('sidePlayer','assets/sidePlayer.png', {frameWidth: 64, frameHeight: 64});
@@ -56,7 +60,7 @@ export default class GameScene extends Phaser.Scene
 
     create()
     {
-        this.bg = this.add.tileSprite(480, 320, 960, 640,'background');
+        this.bg = this.add.tileSprite(800, 448, 1600, 896,'background');
 
         this.map = this.make.tilemap({ key: 'map' });
         // The first parameter is the name of the tileset in Tiled and the second parameter is the key
@@ -71,7 +75,7 @@ export default class GameScene extends Phaser.Scene
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
  
         //create the player
-        this.player = new Player(this, 1, 1);
+        this.player = new Player(this, 2, 2);
 
         //Blocks' setup 
         this.blockManager.create();
@@ -91,8 +95,8 @@ export default class GameScene extends Phaser.Scene
     {
         this.player.update(time);
         this.blockManager.update(time);
-        this.enemyManager.update(time);
         this.wallManager.update(time);
+        this.enemyManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)
