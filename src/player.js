@@ -63,8 +63,8 @@ export default class Player {
             --this.lives;
             if( this.lives >= 0)
             {
+                this.scene.uiManager.updateLives();
                 this.respawn();
-                console.log(this.lives);
             }
             else
             {
