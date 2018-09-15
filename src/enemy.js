@@ -10,6 +10,7 @@ export default class Enemy {
         this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size / 2;
         this.sprite.y = this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size / 2;
         this.sprite.depth = 1;
+        this.sprite.name = "enemy";
 
         //AI stuff
         this._moveDir = Direction.Down;
@@ -77,12 +78,14 @@ export default class Enemy {
     }
 
     updateMovement(time) {
-        if (this.stunned) {
-            this.stunned = false;
+        if(this.stunned && this.stunTimer == 0)
+        {
             this.stunTimer = time;
             this._timer = 0;
         }
+
         if (time > this._moveDuration + this._timer && time > this.stunTime + this.stunTimer) {
+            this.stunned = false;
             switch (this._moveDir) {
                 case Direction.Up:
                     this._moveVelocity = new Phaser.Math.Vector2(0, -this.moveSpeed);
@@ -155,6 +158,7 @@ export default class Enemy {
 
     stunEnemy() {
         this.stunned = true;
+        this.stunTimer = 0;
         var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
         this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size / 2;
         this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size / 2;
