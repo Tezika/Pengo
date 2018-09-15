@@ -16,6 +16,7 @@ export default class Player {
         this.lastPushTime = 0;
         this.lastStunTime = 0;
         this.facing = Direction.Down;
+        this.lives = Constant.Player_Lifes;
         this.tween = null;
 
         this.spaceBar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -58,8 +59,17 @@ export default class Player {
     deathComplete(animation, frame)
     {
         if(animation.key == "deathPlayer")
-        {
-            this.respawn();
+        {   
+            --this.lives;
+            if( this.lives >= 0)
+            {
+                this.respawn();
+                console.log(this.lives);
+            }
+            else
+            {
+                //Jump into the final scene
+            }
         }
     }
 

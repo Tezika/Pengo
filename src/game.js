@@ -4,11 +4,13 @@ import  BlockManager from './blockmanager.js'
 import Enemy from './enemy.js';
 import EnemyManager from './enemymanager.js';
 import WallManager from './wallmanager.js';
+import ScoreManager from './scoremanager.js';
 
 export const Constant = 
 {
     Tile_Size: 64,
-    Empty_Tile_Index: 132
+    Empty_Tile_Index: 132,
+    Player_Lifes: 3
 }
 
 export default class GameScene extends Phaser.Scene
@@ -47,8 +49,9 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('enemyDeath','assets/enemyDeath.png', {frameWidth: 64, frameHeight: 64});
 
         this.blockManager = new BlockManager(this);
-         this.enemyManager = new EnemyManager(this);
+        this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
+        this.scoreManager = new ScoreManager(this);
     }
 
     create()
@@ -80,6 +83,8 @@ export default class GameScene extends Phaser.Scene
         this.wallManager.create();
 
         this.backgroundLayer.setCollision([154]);
+
+        this.ui = this.add.text(100, 100, "test text");
     }
 
     update(time, delta)
