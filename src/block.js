@@ -95,6 +95,7 @@ export default class Block {
                     var enemy = this.scene.enemyManager.getEnemyByTile(tile);
                     if(enemy != null && !enemy.pushing)
                     {
+                        enemy.sprite.anims.play('enemyStun', true);
                         enemy.pushDir = this._moveDir;
                         enemy.pushing = true;
                         enemy.pusher = this;
