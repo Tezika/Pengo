@@ -9,7 +9,7 @@ export default class Enemy {
         this.sprite = scene.physics.add.sprite(300, 300, "pengs", 0);
         this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size / 2;
         this.sprite.y = this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size / 2;
-        this.sprite.depth = 3;
+        this.sprite.depth = 4;
         this.sprite.name = "enemy";
 
         //AI stuff

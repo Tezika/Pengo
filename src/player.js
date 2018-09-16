@@ -9,7 +9,7 @@ export default class Player {
         this.sprite = scene.physics.add.sprite(0, 0, "player", 0);
         this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size / 2;
         this.sprite.y = this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size / 2;
-        this.sprite.depth = 2;
+        this.sprite.depth = 3;
 
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.scene.physics.add.collider(this.sprite, this.backgroundLayer);

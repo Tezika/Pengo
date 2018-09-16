@@ -75,8 +75,6 @@ export default class WallManager {
                 sprite.anims.play('torch', true);
             }
             if (block.properties.cage) {
-                block.index = 154;
-
                 var sprite = this.scene.physics.add.sprite(0, 0, "enemyCage", 0);
                 sprite.name = "wall";
                 sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size / 2;

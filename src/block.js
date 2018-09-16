@@ -30,6 +30,7 @@ export default class Block {
 
         this.sprite.x = this.scene.map.tileToWorldX(tile.x) + Constant.Tile_Size/2;
         this.sprite.y = this.scene.map.tileToWorldY(tile.y) + Constant.Tile_Size/2;
+        this.sprite.depth = 2;
         this._moveSpeed = 10;
         this._moveDuration = 20;
         this._move = false;
