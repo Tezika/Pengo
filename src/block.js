@@ -36,6 +36,8 @@ export default class Block {
         this._timer = 0;
         this._stopArea = 0;
         this._moveDir = Direction.Right;
+
+        this.sprite.on('animationcomplete', this.deathComplete, this);
     }
 
     move(dir) {
@@ -137,6 +139,12 @@ export default class Block {
 
     destroy() {
         if (this.destructable) {
+            this.sprite.anims.play('destroyBlock', true);
+        }
+    }
+
+    deathComplete(animation, frame) {
+        if (animation.key == "destroyBlock") {
             this.scene.blockManager.remove(this);
             this.sprite.destroy();
         }

@@ -46,7 +46,7 @@ export default class EnemyManager {
         this.scene.anims.create({
             key: 'enemyDeath',
             frames: this.scene.anims.generateFrameNumbers('enemyDeath', { start: 0, end: 2 }),
-            frameRate: 5
+            frameRate: 10
         });
 
         this.scene.map.forEachTile(tile => {
@@ -55,9 +55,10 @@ export default class EnemyManager {
                 this.enemies.push(new Enemy(this.scene, tile.x, tile.y));
             }
         });
+        /*
         this.enemies[0].destroying = true;
         this.hsv = Phaser.Display.Color.HSVColorWheel();
-        this.enemies[0].sprite.tint = this.hsv[300].color;
+        this.enemies[0].sprite.tint = this.hsv[300].color;*/
     }
 
     add(tileX, tileY) {

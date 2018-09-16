@@ -4,6 +4,7 @@ import  BlockManager from './blockmanager.js'
 import Enemy from './enemy.js';
 import EnemyManager from './enemymanager.js';
 import WallManager from './wallmanager.js';
+import SlimeManager from './slimemanager.js';
 
 export const Constant = 
 {
@@ -33,6 +34,7 @@ export default class GameScene extends Phaser.Scene
         this.load.image('fire','assets/fireEye.png');
         this.load.spritesheet('enemyCage','assets/enemyCage.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('torch','assets/torch.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('blockDestroy','assets/blockDestroy.png', {frameWidth: 64, frameHeight: 64});
         this.load.image('background', 'assets/background_final.png');
       
         // Player animations
@@ -53,6 +55,7 @@ export default class GameScene extends Phaser.Scene
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
+        this.slimeManager = new SlimeManager(this);
     }
 
     create()
@@ -83,6 +86,9 @@ export default class GameScene extends Phaser.Scene
         //Wall setup
         this.wallManager.create();
 
+        //Slime setup
+        this.slimeManager.create();
+
         this.backgroundLayer.setCollision([154]);
     }
 
@@ -92,6 +98,7 @@ export default class GameScene extends Phaser.Scene
         this.blockManager.update(time);
         this.wallManager.update(time);
         this.enemyManager.update(time);
+        this.slimeManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)
