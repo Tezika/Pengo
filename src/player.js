@@ -96,15 +96,15 @@ export default class Player {
 
             if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y + th)) {
                 this.lastMoveTime = time;
-                // this.tween = this.scene.tweens.add({
-                //      targets: this.sprite,
-                //      ease: 'Linear',
-                //      duration: 99,
-                //      x: this.sprite.x + tw,
-                //      y: this.sprite.y + th
-                //  });
-                this.sprite.x += tw;
-                this.sprite.y += th;
+                this.tween = this.scene.tweens.add({
+                     targets: this.sprite,
+                     ease: 'Linear',
+                     duration: 99,
+                     x: this.sprite.x + tw,
+                     y: this.sprite.y + th
+                 });
+                // this.sprite.x += tw;
+                // this.sprite.y += th;
             }
         }
     }
