@@ -1,15 +1,14 @@
 import 'phaser';
 import GameScene from './game.js'
+import OverScene from './over.js';
 
 
 var config = {
     type: Phaser.WEBGL,
-    width: 960,
-    height: 640,
+    width: 1600,
+    height: 896,
     backgroundColor: '#000000',
     parent: 'phaser-example',
-    width: 960,
-    height: 640,
     physics: {
         default: 'arcade',
         arcade: {
@@ -17,7 +16,7 @@ var config = {
             gravity: { y: 0 }
         }
     },
-    scene:GameScene
+    scene:[GameScene, OverScene]
 };
 
 var game = new Phaser.Game(config);

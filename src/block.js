@@ -16,15 +16,8 @@ export default class Block {
 
         //add the block to the game scene's physics management.
         if (tile.properties.special) {
-
-            this.scene.anims.create({
-                key: 'wisp',
-                frames: this.scene.anims.generateFrameNumbers('wisp', { start: 0, end: 3 }),
-                frameRate: 10,
-                repeat: -1
-            });
     
-            this.sprite = this.scene.physics.add.sprite(0, 0, "blockSpecial", 1);
+            this.sprite = this.scene.physics.add.sprite(0, 0, "blockSpecial", 0);
             this.special = true;
             this.destructable = false;
             this.sprite.anims.play('wisp');
@@ -37,12 +30,15 @@ export default class Block {
 
         this.sprite.x = this.scene.map.tileToWorldX(tile.x) + Constant.Tile_Size/2;
         this.sprite.y = this.scene.map.tileToWorldY(tile.y) + Constant.Tile_Size/2;
+        this.sprite.depth = 2;
         this._moveSpeed = 10;
         this._moveDuration = 20;
         this._move = false;
         this._timer = 0;
         this._stopArea = 0;
         this._moveDir = Direction.Right;
+
+        this.sprite.on('animationcomplete', this.deathComplete, this);
     }
 
     move(dir) {
@@ -102,6 +98,7 @@ export default class Block {
                     var enemy = this.scene.enemyManager.getEnemyByTile(tile);
                     if(enemy != null && !enemy.pushing)
                     {
+                        enemy.sprite.anims.play('enemyStun', true);
                         enemy.pushDir = this._moveDir;
                         enemy.pushing = true;
                         enemy.pusher = this;
@@ -143,6 +140,12 @@ export default class Block {
 
     destroy() {
         if (this.destructable) {
+            this.sprite.anims.play('destroyBlock', true);
+        }
+    }
+
+    deathComplete(animation, frame) {
+        if (animation.key == "destroyBlock") {
             this.scene.blockManager.remove(this);
             this.sprite.destroy();
         }

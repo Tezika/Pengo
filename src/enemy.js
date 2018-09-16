@@ -6,9 +6,11 @@ import { Constant } from './game';
 export default class Enemy {
     constructor(scene, tileX, tileY) {
         this.scene = scene;
-        this.sprite = scene.physics.add.sprite(2, 3, "pengs", 0);
-        this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size/2;
-        this.sprite.y= this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size/2;
+        this.sprite = scene.physics.add.sprite(300, 300, "pengs", 0);
+        this.sprite.x = this.scene.map.tileToWorldX(tileX) + Constant.Tile_Size / 2;
+        this.sprite.y = this.scene.map.tileToWorldY(tileY) + Constant.Tile_Size / 2;
+        this.sprite.depth = 4;
+        this.sprite.name = "enemy";
 
         //AI stuff
         this._moveDir = Direction.Down;
@@ -28,78 +30,62 @@ export default class Enemy {
         this.pushingSpeed = 10;
         this.pushDir = Direction.Left;
         this.pusher = null;
+        this.death = false;
         this.destroying = false;
-        
-        this.scene.anims.create({
-            key: 'enemyDown',
-            frames: this.scene.anims.generateFrameNumbers('enemyFront', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
 
-        this.scene.anims.create({
-            key: 'enemySide',
-            frames: this.scene.anims.generateFrameNumbers('enemySide', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.scene.anims.create({
-            key: 'enemyUp',
-            frames: this.scene.anims.generateFrameNumbers('enemyBack', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.scene.anims.create({
-            key: 'enemyStun',
-            frames: this.scene.anims.generateFrameNumbers('enemyStun', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        
         this.sprite.anims.play('enemyDown', true);
+        this.sprite.on('animationcomplete', this.deathComplete, this);
     }
 
     update(time) {
-        if (this.pushing) {
-            this.updatePushing();
-        }
-        else {
-            this.updateMovement(time);
+        if (!this.death) {
+            if (this.pushing) {
+                this.updatePushing();
+            }
+            else {
+                this.updateMovement(time);
+            }
         }
     }
 
     updatePushing() {
+        var x = this.sprite.x;
+        var y = this.sprite.y;
         switch (this.pushDir) {
             case Direction.Up:
-                this.sprite.y = this.pusher.sprite.y - this.scene.tileHeight;
+                y = this.pusher.sprite.y - this.scene.tileHeight;
                 break;
             case Direction.Down:
-                this.sprite.y = this.pusher.sprite.y + this.scene.tileHeight;
+                y = this.pusher.sprite.y + this.scene.tileHeight;
                 break;
             case Direction.Left:
-                this.sprite.x = this.pusher.sprite.x - this.scene.tileWidth;
+                x = this.pusher.sprite.x - this.scene.tileWidth;
                 break;
             case Direction.Right:
-                this.sprite.x = this.pusher.sprite.x + this.scene.tileWidth;
+                x = this.pusher.sprite.x + this.scene.tileWidth;
                 break;
             default:
                 break;
         }
+
         //when the enemy died.
-        if (!this.scene.isTileOpenAt(this.sprite.x, this.sprite.y)) {
+        if (!this.scene.isTileOpenAt(x, y)) {
             this.destroy();
         }
+
+        this.sprite.x = x;
+        this.sprite.y = y;
     }
 
     updateMovement(time) {
-        if (this.stunned) {
-            this.stunned = false;
+        if(this.stunned && this.stunTimer == 0)
+        {
             this.stunTimer = time;
             this._timer = 0;
         }
+
         if (time > this._moveDuration + this._timer && time > this.stunTime + this.stunTimer) {
+            this.stunned = false;
             switch (this._moveDir) {
                 case Direction.Up:
                     this._moveVelocity = new Phaser.Math.Vector2(0, -this.moveSpeed);
@@ -144,30 +130,38 @@ export default class Enemy {
                 }
                 else {
                     var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
-                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
+                    this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size / 2;
+                    this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size / 2;
                     this.getRandomMoveDir();
                 }
             }
             else {
                 var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-                this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
-                this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
+                this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size / 2;
+                this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size / 2;
                 this.getRandomMoveDir();
             }
         }
     }
 
     destroy() {
-        this.scene.enemyManager.remove(this);
-        this.sprite.destroy();
+        this.sprite.anims.play('enemyDeath', true);
+        this.death = true;
+    }
+
+    deathComplete(animation, frame) {
+        if (animation.key == "enemyDeath") {
+            this.scene.enemyManager.remove(this);
+            this.sprite.destroy();
+        }
     }
 
     stunEnemy() {
         this.stunned = true;
+        this.stunTimer = 0;
         var stopTile = this.scene.map.getTileAtWorldXY(this.sprite.x, this.sprite.y);
-        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size/2;
-        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size/2;
+        this.sprite.x = this.scene.map.tileToWorldX(stopTile.x) + Constant.Tile_Size / 2;
+        this.sprite.y = this.scene.map.tileToWorldY(stopTile.y) + Constant.Tile_Size / 2;
         this.getRandomMoveDir();
 
         this.scene.tweens.timeline({
@@ -217,10 +211,7 @@ export default class Enemy {
         }
     }
 
-    onStunStart()
-    {
-        console.log("The stun is starting.");
-        console.log(this.sprite.anims);
+    onStunStart() {
         this.sprite.anims.play('enemyStun', true);
     }
 
