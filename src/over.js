@@ -18,7 +18,7 @@ export default class OverScene extends Scene
         this.add.tileSprite(800, 448, 1600, 896,'gameover');
         this.input.once('pointerdown', function (event) {
 
-            this.scene.start('game');
+            this.scene.start('start');
 
         }, this);
     }

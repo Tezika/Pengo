@@ -68,8 +68,7 @@ export default class Player {
     slimeUpdate(time) {
         if (this.slimeActive && this.slimeTimer == 0) {
             this.slimeTimer = time;
-        }
-        if (time > this.slimeTimer + this.slimeDuration) {
+        }else if (time > this.slimeTimer + this.slimeDuration) {
             this.slimeActive = false;
             this.moveDelay = 200;
             this.slimeTimer = 0;

@@ -19,7 +19,7 @@ export default class SlimeManager {
         this.scene.map.forEachTile(block => {
             if (block.properties.slime) {
                 block.index = Constant.Empty_Tile_Index;
-                var sprite = this.scene.physics.add.sprite(0, 0, "Skull", 0);
+                var sprite = this.scene.physics.add.sprite(500, 500, "tar", 0);
                 sprite.name = "slime";
                 sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size / 2;
                 sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size / 2;
