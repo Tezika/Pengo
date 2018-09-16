@@ -19,6 +19,7 @@ export default class GameScene extends Phaser.Scene
     constructor()
     {
         super();
+        Phaser.Scene.call(this, { key: 'game' });
     }
 
     preload()

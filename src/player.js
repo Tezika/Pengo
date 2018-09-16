@@ -61,7 +61,7 @@ export default class Player {
         if(animation.key == "deathPlayer")
         {   
             --this.lives;
-            if( this.lives >= 0)
+            if( this.lives > 0)
             {
                 this.scene.uiManager.updateLives();
                 this.respawn();
@@ -69,6 +69,7 @@ export default class Player {
             else
             {
                 //Jump into the final scene
+                this.scene.scene.start('over');
             }
         }
     }
