@@ -17,6 +17,7 @@ export default class Player {
         this.lastPushTime = 0;
         this.lastStunTime = 0;
         this.facing = Direction.Down;
+        this.lives = Constant.Player_Lifes;
         this.tween = null;
 
         this.canMove = true;
@@ -80,9 +81,21 @@ export default class Player {
         this.slimeActive = true;
     }
 
-    deathComplete(animation, frame) {
-        if (animation.key == "deathPlayer") {
-            this.respawn();
+    deathComplete(animation, frame)
+    {
+        if(animation.key == "deathPlayer")
+        {   
+            --this.lives;
+            if( this.lives > 0)
+            {
+                this.scene.uiManager.updateLives();
+                this.respawn();
+            }
+            else
+            {
+                //Jump into the final scene
+                this.scene.scene.start('over');
+            }
         }
     }
 

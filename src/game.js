@@ -5,11 +5,14 @@ import Enemy from './enemy.js';
 import EnemyManager from './enemymanager.js';
 import WallManager from './wallmanager.js';
 import SlimeManager from './slimemanager.js';
+import ScoreManager from './scoremanager.js';
+import UIManager from './uimanager.js';
 
 export const Constant = 
 {
     Tile_Size: 64,
-    Empty_Tile_Index: 132
+    Empty_Tile_Index: 132,
+    Player_Lifes: 3
 }
 
 export default class GameScene extends Phaser.Scene
@@ -17,6 +20,7 @@ export default class GameScene extends Phaser.Scene
     constructor()
     {
         super();
+        Phaser.Scene.call(this, { key: 'game' });
     }
 
     preload()
@@ -32,6 +36,7 @@ export default class GameScene extends Phaser.Scene
         this.load.image('Skull','assets/Skull.png');
         this.load.image('Skull Penguin','assets/Skull Penguin.png');
         this.load.image('fire','assets/fireEye.png');
+        this.load.image('livesBg', 'assets/livesBG.jpg');
         this.load.spritesheet('enemyCage','assets/enemyCage.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('torch','assets/torch.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('blockDestroy','assets/blockDestroy.png', {frameWidth: 64, frameHeight: 64});
@@ -56,6 +61,8 @@ export default class GameScene extends Phaser.Scene
         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
         this.slimeManager = new SlimeManager(this);
+        this.scoreManager = new ScoreManager(this);
+        this.uiManager = new UIManager(this, 800, 32);
     }
 
     create()
@@ -88,6 +95,9 @@ export default class GameScene extends Phaser.Scene
 
         //Slime setup
         this.slimeManager.create();
+        
+        //UI setup
+        this.uiManager.create();
 
         this.backgroundLayer.setCollision([154]);
     }
