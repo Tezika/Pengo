@@ -24,10 +24,10 @@ export default class GameScene extends Phaser.Scene
 
     preload()
     {
+        
         //load the tiles
         this.load.tilemapTiledJSON('map', 'assets/tilemap/pengo.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
-        this.load.image('pengs', 'assets/pengs.png');
         this.load.image('cage', 'assets/cage.png');
         this.titlesetName = 'snowWIP';
 
@@ -35,6 +35,7 @@ export default class GameScene extends Phaser.Scene
         this.load.image('Skull','assets/Skull.png');
         this.load.image('Skull Penguin','assets/Skull Penguin.png');
         this.load.image('fire','assets/fireEye.png');
+        this.load.image('tar','assets/tar.png');
         this.load.image('livesBg', 'assets/livesBG.jpg');
         this.load.spritesheet('enemyCage','assets/enemyCage.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('torch','assets/torch.png', {frameWidth: 64, frameHeight: 64});
@@ -75,7 +76,7 @@ export default class GameScene extends Phaser.Scene
 
         // You can load a layer from the map using the layer name from Tiled, or by using the layer
         // index (0 in this case).
-        this.backgroundLayer = this.map.createDynamicLayer('background', tiles);
+        this.backgroundLayer = this.map.createStaticLayer('background', tiles);
 
         this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;

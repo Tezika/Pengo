@@ -14,7 +14,7 @@ export default class Enemy {
 
         //AI stuff
         this._moveDir = Direction.Down;
-        this.moveSpeed = 5;
+        this.moveSpeed = 10;
         this._moveDuration = 80;
         this._moveVelocity = null;
         this._stopArea = null;
