@@ -57,6 +57,9 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('enemyStun','assets/enemyStun.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('enemyDeath','assets/enemyDeath.png', {frameWidth: 64, frameHeight: 64});
 
+        //Font assets
+        this.load.bitmapFont('upheaval', 'assets/fonts/upheaval.png', 'assets/fonts/upheaval.fnt');
+
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
