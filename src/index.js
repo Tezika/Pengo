@@ -1,6 +1,7 @@
 import 'phaser';
 import GameScene from './game.js'
 import OverScene from './over.js';
+import StartScene from './start.js';
 
 
 var config = {
@@ -16,7 +17,7 @@ var config = {
             gravity: { y: 0 }
         }
     },
-    scene:[GameScene, OverScene]
+    scene:[StartScene,GameScene,OverScene]
 };
 
 var game = new Phaser.Game(config);

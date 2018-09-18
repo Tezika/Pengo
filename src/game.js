@@ -1,9 +1,9 @@
 import 'phaser'
 import  Player from './player.js'
 import  BlockManager from './blockmanager.js'
-import Enemy from './enemy.js';
 import EnemyManager from './enemymanager.js';
 import WallManager from './wallmanager.js';
+import SlimeManager from './slimemanager.js';
 import ScoreManager from './scoremanager.js';
 import UIManager from './uimanager.js';
 
@@ -24,10 +24,10 @@ export default class GameScene extends Phaser.Scene
 
     preload()
     {
+        
         //load the tiles
         this.load.tilemapTiledJSON('map', 'assets/tilemap/pengo.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
-        this.load.image('pengs', 'assets/pengs.png');
         this.load.image('cage', 'assets/cage.png');
         this.titlesetName = 'snowWIP';
 
@@ -35,9 +35,11 @@ export default class GameScene extends Phaser.Scene
         this.load.image('Skull','assets/Skull.png');
         this.load.image('Skull Penguin','assets/Skull Penguin.png');
         this.load.image('fire','assets/fireEye.png');
+        this.load.image('tar','assets/tar.png');
         this.load.image('livesBg', 'assets/livesBG.jpg');
         this.load.spritesheet('enemyCage','assets/enemyCage.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('torch','assets/torch.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('blockDestroy','assets/blockDestroy.png', {frameWidth: 64, frameHeight: 64});
         this.load.image('background', 'assets/background_final.png');
       
         // Player animations
@@ -55,9 +57,13 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('enemyStun','assets/enemyStun.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('enemyDeath','assets/enemyDeath.png', {frameWidth: 64, frameHeight: 64});
 
+        //Font assets
+        this.load.bitmapFont('upheaval', 'assets/fonts/upheaval.png', 'assets/fonts/upheaval.fnt');
+
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
+        this.slimeManager = new SlimeManager(this);
         this.scoreManager = new ScoreManager(this);
         this.uiManager = new UIManager(this, 800, 32);
     }
@@ -73,7 +79,7 @@ export default class GameScene extends Phaser.Scene
 
         // You can load a layer from the map using the layer name from Tiled, or by using the layer
         // index (0 in this case).
-        this.backgroundLayer = this.map.createDynamicLayer('background', tiles);
+        this.backgroundLayer = this.map.createStaticLayer('background', tiles);
 
         this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
@@ -90,6 +96,9 @@ export default class GameScene extends Phaser.Scene
         //Wall setup
         this.wallManager.create();
 
+        //Slime setup
+        this.slimeManager.create();
+        
         //UI setup
         this.uiManager.create();
 
@@ -102,6 +111,7 @@ export default class GameScene extends Phaser.Scene
         this.blockManager.update(time);
         this.wallManager.update(time);
         this.enemyManager.update(time);
+        this.slimeManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)

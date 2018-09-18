@@ -17,7 +17,6 @@ export default class UIManager
         this.updateLives();
     }
 
-
     updateLives()
     {
         //remove all sprites firstly
@@ -32,6 +31,8 @@ export default class UIManager
         //update the life count;
         this.lifeCount = this.scene.player.lives;
         this.lifePosX = this.lifeBg.x - this.lifeBg.width/2 + Constant.Tile_Size/4;
+
+        //set the new life sprites
         for(var i = 0; i < this.lifeCount; i++)
         {
             var uiElement = this.scene.add.sprite(this.lifePosX, this.lifeBg.y, 'downPlayer', 0);

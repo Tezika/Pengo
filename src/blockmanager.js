@@ -27,6 +27,12 @@ export default class BlockManager
             repeat: -1
         });
 
+        this.scene.anims.create({
+            key: 'destroyBlock',
+            frames: this.scene.anims.generateFrameNumbers('blockDestroy', { start: 0, end: 7 }),
+            frameRate: 15
+        });
+
         //var blockSprite = this.scene.map.createFromObjects('blocks', 'block', {key:'player'}, this);
         this.scene.map.forEachTile(block => {
             if(block.properties.block)
