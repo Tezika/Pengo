@@ -28,12 +28,12 @@ export default class GameScene extends Phaser.Scene
         //load the tiles
         this.load.tilemapTiledJSON('map', 'assets/tilemap/pengo.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
-        this.load.image('cage', 'assets/cage.png');
+        this.load.image('cage', 'assets/Cage.png');
         this.titlesetName = 'snowWIP';
 
         // Wall assets
         this.load.image('Skull','assets/Skull.png');
-        this.load.image('Skull Penguin','assets/Skull Penguin.png');
+        this.load.image('Skull Penguin','assets/Skullpenguin.png');
         this.load.image('fire','assets/fireEye.png');
         this.load.image('tar','assets/tar.png');
         this.load.image('livesBg', 'assets/livesBG.jpg');
