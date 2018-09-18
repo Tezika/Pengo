@@ -30,6 +30,9 @@ export default class Player {
 
         this.spaceBar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+        this.wallShakeSound = this.scene.sound.add('wallShake',{volume: 0});
+        this.deathSound = this.scene.sound.add('playerDeath', {volume: 0}); 
+
         if(!this.scene.anims.get('downPlayer'))
         this.scene.anims.create({
             key: 'downPlayer',
@@ -104,6 +107,7 @@ export default class Player {
     }
 
     die() {
+        this.deathSound.play();
         this.sprite.anims.play('deathPlayer', true);
         this.lastMoveTime = Number.MAX_SAFE_INTEGER;
     }
@@ -230,6 +234,7 @@ export default class Player {
     WallStunning(time, xmov, ymov) {
         var lookSpr = this.scene.getObjAt(this.sprite.x + xmov, this.sprite.y + ymov);
         if (lookSpr instanceof Phaser.GameObjects.Sprite && lookSpr.name == "wall") {
+            this.wallShakeSound.play();
             this.lastStunTime = time;
             this.scene.wallManager.wallSprites.forEach(wall => {
                 if (xmov != 0) {

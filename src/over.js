@@ -19,9 +19,7 @@ export default class OverScene extends Scene
         this.add.tileSprite(800, 448, 1600, 896,'gameover');
         this.add.bitmapText(78, 840, 'upheaval', 'You Died! One credit to rechanllenge!');
         this.input.once('pointerdown', function (event) {
-
             this.scene.start('game');
-
         }, this);
     }
 

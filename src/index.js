@@ -18,7 +18,10 @@ var config = {
             gravity: { y: 0 }
         }
     },
-    scene:[StartScene,GameScene,GameScene2,OverScene]
+    scene:[StartScene,GameScene,GameScene2,OverScene],
+    audio:{
+        disableWebAudio: true
+    }
 };
 
 var game = new Phaser.Game(config);

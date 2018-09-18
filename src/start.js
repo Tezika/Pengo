@@ -19,9 +19,7 @@ export default class StartScene extends Scene
         this.add.tileSprite(800, 448, 1600, 896,'startScreen');
         this.add.bitmapText(180, 840, 'upheaval', 'Press mouse left button to start!');
         this.input.once('pointerdown', function (event) {
-
             this.scene.start('game');
-
         }, this);
     }
 

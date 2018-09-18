@@ -10,12 +10,14 @@ export default class PortalManager {
     }
 
     preload() {
+     
 
     }
 
     create() {
         this.portals = [];
-
+        this.cageEntersPortalSound = this.scene.sound.add('cageEntersPortal');
+        this.activePortalSound = this.scene.sound.add('portalActive');
         this.scene.map.forEachTile(block => {
             if (block.properties.portal) {
                 block.index = 154;
@@ -55,6 +57,7 @@ export default class PortalManager {
     }
 
     activatePortals() {
+        this.activePortalSound.play();
         this.portals.forEach(sprite => {
             sprite.setTexture("portal");
             this.scene.tweens.add({
@@ -87,6 +90,7 @@ export default class PortalManager {
         {
             rnd = 0;
         }
+        this.cageEntersPortalSound.play();
         this.scene.wallManager.skulls[rnd].angle = 0;
         this.scene.wallManager.skulls[rnd].setTexture("enemyCage");
         this.scene.wallManager.skulls[rnd].anims.play('enemyCage', true);
