@@ -41,6 +41,8 @@ export default class Block {
         this.cagedEnemy = false;
 
         this.sprite.on('animationcomplete', this.deathComplete, this);
+
+        this.destroySound = this.scene.sound.add('cageBreak');
     }
 
     move(dir) {
@@ -159,6 +161,7 @@ export default class Block {
 
     destroy() {
         if (this.destructable) {
+            this.destroySound.play();
             this.sprite.anims.play('destroyBlock', true);
         }
     }

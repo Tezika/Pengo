@@ -112,9 +112,7 @@ export default class GameScene extends Phaser.Scene
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
 
         //Setup the bg music
-        this.bgMusic = this.sound.add('theme');
-        this.bgMusic.setLoop(true);
-        this.bgMusic.setVolume(0.3);
+        this.bgMusic = this.sound.add('theme', {volume: 1, loop: true});
         this.bgMusic.play();
  
         //create the player
