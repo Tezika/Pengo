@@ -40,7 +40,7 @@ export default class Enemy {
         //Audio Stuff
         this.dieSound = this.scene.sound.add('penguinExplode');
 
-        if(Math.random() > .95)
+        if(Math.random() > .8)
         {
             this.destroying = true;
             this.hsv = Phaser.Display.Color.HSVColorWheel();
