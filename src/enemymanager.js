@@ -60,9 +60,9 @@ export default class EnemyManager {
                 this.enemies.push(new Enemy(this.scene, tile.x, tile.y));
             }
         }); 
-        //this.enemies[0].destroying = true;
+        this.enemies[0].destroying = true;
         this.hsv = Phaser.Display.Color.HSVColorWheel();
-        //this.enemies[0].sprite.tint = this.hsv[300].color;
+        this.enemies[0].sprite.tint = this.hsv[300].color;
 
         this.enemySpawner = this.scene.time.addEvent({
             delay: 4000,
