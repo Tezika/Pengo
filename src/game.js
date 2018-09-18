@@ -28,12 +28,12 @@ export default class GameScene extends Phaser.Scene
         //load the tiles
         this.load.tilemapTiledJSON('map', 'assets/tilemap/pengo.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
-        this.load.image('cage', 'assets/cage.png');
+        this.load.image('cage', 'assets/Cage.png');
         this.titlesetName = 'snowWIP';
 
         // Wall assets
         this.load.image('Skull','assets/Skull.png');
-        this.load.image('Skull Penguin','assets/Skull Penguin.png');
+        this.load.image('Skull Penguin','assets/Skullpenguin.png');
         this.load.image('fire','assets/fireEye.png');
         this.load.image('tar','assets/tar.png');
         this.load.image('livesBg', 'assets/livesBG.jpg');
@@ -60,6 +60,10 @@ export default class GameScene extends Phaser.Scene
         //Font assets
         this.load.bitmapFont('upheaval', 'assets/fonts/upheaval.png', 'assets/fonts/upheaval.fnt');
 
+        this.load.audio('theme', [
+            'assets/sfx/background.ogg'
+        ]);
+
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
@@ -83,6 +87,11 @@ export default class GameScene extends Phaser.Scene
 
         this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
+
+        //Setup the bg music
+        this.bgMusic = this.sound.add('theme');
+        this.bgMusic.setLoop(true);
+        this.bgMusic.play();
  
         //create the player
         this.player = new Player(this, 2, 2);
@@ -103,6 +112,8 @@ export default class GameScene extends Phaser.Scene
         this.uiManager.create();
 
         this.backgroundLayer.setCollision([154]);
+        
+   
     }
 
     update(time, delta)
