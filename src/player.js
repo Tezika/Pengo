@@ -30,12 +30,14 @@ export default class Player {
 
         this.spaceBar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+        if(!this.scene.anims.get('downPlayer'))
         this.scene.anims.create({
             key: 'downPlayer',
             frames: this.scene.anims.generateFrameNumbers('downPlayer', { start: 0, end: 13 }),
             frameRate: 10,
             repeat: -1
         });
+        if(!this.scene.anims.get('sidePlayer'))
         this.scene.anims.create({
             key: 'sidePlayer',
             frames: this.scene.anims.generateFrameNumbers('sidePlayer', { start: 0, end: 12 }),
@@ -43,6 +45,7 @@ export default class Player {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('upPlayer'))
         this.scene.anims.create({
             key: 'upPlayer',
             frames: this.scene.anims.generateFrameNumbers('upPlayer', { start: 0, end: 12 }),
@@ -50,6 +53,7 @@ export default class Player {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('deathPlayer'))
         this.scene.anims.create({
             key: 'deathPlayer',
             frames: this.scene.anims.generateFrameNumbers('deathPlayer', { start: 0, end: 13 }),

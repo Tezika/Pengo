@@ -21,6 +21,10 @@ export default class GameScene extends Phaser.Scene
     {
         super();
         Phaser.Scene.call(this, { key: 'game' });
+        this.loadLevel = function()
+        {
+            this.map = this.make.tilemap({ key: 'map' });
+        }
     }
 
     preload()
@@ -28,6 +32,7 @@ export default class GameScene extends Phaser.Scene
         
         //load the tiles
         this.load.tilemapTiledJSON('map', 'assets/tilemap/pengo.json');
+        this.load.tilemapTiledJSON('map2', 'assets/tilemap/lvl2.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
         this.load.image('cage', 'assets/Cage.png');
         this.titlesetName = 'snowWIP';
@@ -76,7 +81,8 @@ export default class GameScene extends Phaser.Scene
     {
         this.bg = this.add.tileSprite(800, 448, 1600, 896,'background');
 
-        this.map = this.make.tilemap({ key: 'map' });
+        this.loadLevel();
+
         // The first parameter is the name of the tileset in Tiled and the second parameter is the key
         // of the tileset image used when loading the file in preload.
         var tiles = this.map.addTilesetImage(this.titlesetName, 'tiles');

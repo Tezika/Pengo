@@ -15,6 +15,7 @@ export default class EnemyManager {
     create() {
         this.enemies = [];
 
+        if(!this.scene.anims.get('enemyDown'))
         this.scene.anims.create({
             key: 'enemyDown',
             frames: this.scene.anims.generateFrameNumbers('enemyFront', { start: 0, end: 3 }),
@@ -22,6 +23,7 @@ export default class EnemyManager {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('enemySide'))
         this.scene.anims.create({
             key: 'enemySide',
             frames: this.scene.anims.generateFrameNumbers('enemySide', { start: 0, end: 3 }),
@@ -29,6 +31,7 @@ export default class EnemyManager {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('enemyUp'))
         this.scene.anims.create({
             key: 'enemyUp',
             frames: this.scene.anims.generateFrameNumbers('enemyBack', { start: 0, end: 3 }),
@@ -36,6 +39,7 @@ export default class EnemyManager {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('enemyStun'))
         this.scene.anims.create({
             key: 'enemyStun',
             frames: this.scene.anims.generateFrameNumbers('enemyStun', { start: 0, end: 3 }),
@@ -43,6 +47,7 @@ export default class EnemyManager {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('enemyDeath'))
         this.scene.anims.create({
             key: 'enemyDeath',
             frames: this.scene.anims.generateFrameNumbers('enemyDeath', { start: 0, end: 2 }),
@@ -55,15 +60,17 @@ export default class EnemyManager {
                 this.enemies.push(new Enemy(this.scene, tile.x, tile.y));
             }
         }); 
-        this.enemies[0].destroying = true;
+        //this.enemies[0].destroying = true;
         this.hsv = Phaser.Display.Color.HSVColorWheel();
-        this.enemies[0].sprite.tint = this.hsv[300].color;
+        //this.enemies[0].sprite.tint = this.hsv[300].color;
 
         this.enemySpawner = this.scene.time.addEvent({
-            delay: 5000,
+            delay: 4000,
             callback: this.spawnEnemy.bind(this),
             loop: true
         })
+
+        this.purpleSpawnRate = .95;
     }
 
     add(tileX, tileY) {

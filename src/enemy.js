@@ -36,7 +36,7 @@ export default class Enemy {
         this.sprite.anims.play('enemyDown', true);
         this.sprite.on('animationcomplete', this.deathComplete, this);
 
-        if(Math.random() > .95)
+        if(Math.random() > this.scene.enemyManager.purpleSpawnRate)
         {
             this.destroying = true;
             this.hsv = Phaser.Display.Color.HSVColorWheel();

@@ -19,15 +19,17 @@ export default class WallManager {
         this.wallParty = false;
         this.wallInc = 0;
         this.partyModeTimer = 0;
-        this.partyDuration = 3000;
+        this.partyDuration = 5000;
         this.hsv = Phaser.Display.Color.HSVColorWheel();
 
+        if(!this.scene.anims.get('enemyCage'))
         this.scene.anims.create({
             key: 'enemyCage',
             frames: this.scene.anims.generateFrameNumbers('enemyCage', { start: 0, end: 1 }),
             frameRate: 1,
             repeat: -1
         });
+        if(!this.scene.anims.get('torch'))
         this.scene.anims.create({
             key: 'torch',
             frames: this.scene.anims.generateFrameNumbers('torch', { start: 0, end: 3 }),
@@ -81,13 +83,13 @@ export default class WallManager {
 
     update(time) {
         if (this.wallParty) {
-            /*if (time > this.partyModeTimer + this.partyDuration) {
+            if (time > this.partyModeTimer + this.partyDuration) {
                 this.wallParty = false;
                 this.endWallSpritesParty();
             }
-            else {*/
+            else {
                 this.wallSpritesParty();
-            //}
+            }
         }
         this.rotInc++;
     }
@@ -124,5 +126,7 @@ export default class WallManager {
                 block.sprite.anims.stopOnRepeat();
             }
         });
+        
+        this.scene.scene.start('level2');
     }
 }
