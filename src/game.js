@@ -6,6 +6,7 @@ import WallManager from './wallmanager.js';
 import SlimeManager from './slimemanager.js';
 import ScoreManager from './scoremanager.js';
 import UIManager from './uimanager.js';
+import PortalManager from './portalmanager.js';
 
 export const Constant = 
 {
@@ -41,6 +42,8 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('torch','assets/torch.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('blockDestroy','assets/blockDestroy.png', {frameWidth: 64, frameHeight: 64});
         this.load.image('background', 'assets/background_final.png');
+        this.load.image('portal', 'assets/Portal.png');
+        this.load.image('portalGrey', 'assets/Portal_Inactive.png');
       
         // Player animations
         this.load.spritesheet('sidePlayer','assets/sidePlayer.png', {frameWidth: 64, frameHeight: 64});
@@ -65,6 +68,7 @@ export default class GameScene extends Phaser.Scene
         this.wallManager = new WallManager(this);
         this.slimeManager = new SlimeManager(this);
         this.scoreManager = new ScoreManager(this);
+        this.portalManager = new PortalManager(this);
         this.uiManager = new UIManager(this, 800, 32);
     }
 
@@ -102,6 +106,9 @@ export default class GameScene extends Phaser.Scene
         //UI setup
         this.uiManager.create();
 
+        //Portal setup
+        this.portalManager.create();
+
         this.backgroundLayer.setCollision([154]);
     }
 
@@ -112,6 +119,7 @@ export default class GameScene extends Phaser.Scene
         this.wallManager.update(time);
         this.enemyManager.update(time);
         this.slimeManager.update(time);
+        this.portalManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)

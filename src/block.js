@@ -38,6 +38,8 @@ export default class Block {
         this._stopArea = 0;
         this._moveDir = Direction.Right;
 
+        this.cagedEnemy = false;
+
         this.sprite.on('animationcomplete', this.deathComplete, this);
     }
 
@@ -98,10 +100,21 @@ export default class Block {
                     var enemy = this.scene.enemyManager.getEnemyByTile(tile);
                     if(enemy != null && !enemy.pushing)
                     {
-                        enemy.sprite.anims.play('enemyStun', true);
-                        enemy.pushDir = this._moveDir;
-                        enemy.pushing = true;
-                        enemy.pusher = this;
+                        if(!this.cagedEnemy && !this.special)
+                        {
+                            this.sprite.anims.play("enemyCage", true);
+                            this.cagedEnemy = true;
+                            this.destructable = false;
+                            enemy.destroyNoAnim();
+                            this.scene.blockManager.cagedEnemies++;
+                        }
+                        else
+                        {
+                            enemy.sprite.anims.play('enemyStun', true);
+                            enemy.pushDir = this._moveDir;
+                            enemy.pushing = true;
+                            enemy.pusher = this;
+                        }
                     }
                 }
             }
@@ -127,9 +140,15 @@ export default class Block {
                     if((down != null && down.special && up != null && up.special) 
                     || (left != null && left.special && right != null && right.special) && !this.scene.wallManager.wallParty)
                     {
-                        console.log("BONUS POINTS YAAA");
-                        this.scene.wallManager.partyModeTimer = time;
-                        this.scene.wallManager.wallParty = true;
+                        if(!this.scene.blockManager.specialActivated)
+                        {
+                            console.log("BONUS POINTS YAAA");
+                            this.scene.portalManager.activatePortals();
+                            this.scene.blockManager.specialActivated = true;
+                        }
+
+                        //this.scene.wallManager.partyModeTimer = time;
+                        //this.scene.wallManager.wallParty = true;
                     }
                 }
                 else{
