@@ -65,12 +65,12 @@ export default class EnemyManager {
         this.enemies[0].sprite.tint = this.hsv[300].color;
 
         this.enemySpawner = this.scene.time.addEvent({
-            delay: 4000,
+            delay: 6000,
             callback: this.spawnEnemy.bind(this),
             loop: true
         })
 
-        this.purpleSpawnRate = .87;
+        this.purpleSpawnRate = .85;
     }
 
     add(tileX, tileY) {
