@@ -16,6 +16,7 @@ export default class PortalManager {
 
     create() {
         this.portals = [];
+        this.cagedCount = 0;
         this.cageEntersPortalSound = this.scene.sound.add('cageEntersPortal');
         this.activePortalSound = this.scene.sound.add('portalActive');
         this.scene.map.forEachTile(block => {
@@ -95,5 +96,6 @@ export default class PortalManager {
         this.scene.wallManager.skulls[rnd].setTexture("enemyCage");
         this.scene.wallManager.skulls[rnd].anims.play('enemyCage', true);
         this.scene.wallManager.skulls[rnd].name = "cage";
+        this.cagedCount++;
     }
 }

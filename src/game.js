@@ -26,6 +26,15 @@ export default class GameScene extends Phaser.Scene
             this.map = this.make.tilemap({ key: 'map' });
         }
     }
+    
+    init(data)
+    {
+        this.cageCount = 0;
+        if(data.cages != undefined)
+        {
+            this.cageCount = data.cages;
+        }
+    }
 
     preload()
     {

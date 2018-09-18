@@ -79,6 +79,8 @@ export default class WallManager {
                 sprite.anims.play('torch', true);
             }
         });
+        
+        this.generateCages();
     }
 
     update(time) {
@@ -127,6 +129,27 @@ export default class WallManager {
             }
         });
         
-        this.scene.scene.start('level2');
+        this.scene.scene.start('level2',{cages: this.scene.portalManager.cagedCount});
+    }
+
+    generateCages()
+    {
+        var wallLen = this.skulls.length;
+        for(var i = 0; i < this.scene.cageCount; i++)
+        {
+            var rnd = Math.round(Math.random() * wallLen);
+            if(this.skulls[rnd].name == "cage")
+            {
+                rnd++;
+            }
+            if(rnd > wallLen)
+            {
+                rnd = 0;
+            }
+            this.skulls[rnd].angle = 0;
+            this.skulls[rnd].setTexture("enemyCage");
+            this.skulls[rnd].anims.play('enemyCage', true);
+            this.skulls[rnd].name = "cage";
+        }
     }
 }
