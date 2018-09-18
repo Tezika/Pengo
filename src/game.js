@@ -60,10 +60,29 @@ export default class GameScene extends Phaser.Scene
         //Font assets
         this.load.bitmapFont('upheaval', 'assets/fonts/upheaval.png', 'assets/fonts/upheaval.fnt');
 
+        //Audio assets
         this.load.audio('theme', [
             'assets/sfx/background.ogg'
         ]);
-
+        this.load.audio('cageBreak', [
+            'assets/sfx/cageBreak.ogg'
+        ]);
+        this.load.audio('cageEntersPortal', [
+            'assets/sfx/cageEntersPortal.ogg'
+        ]);
+        this.load.audio('penguinExplode', [
+            'assets/sfx/penguinExplode.ogg'
+        ]);
+        this.load.audio('playerDeath', [
+            'assets/sfx/playerDeath.ogg'
+        ]);
+        this.load.audio('portalActive', [
+            'assets/sfx/portalActive.ogg'
+        ]);
+        this.load.audio('wallShake', [
+            'assets/sfx/wallShake.ogg'
+        ]);
+    
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
@@ -91,6 +110,7 @@ export default class GameScene extends Phaser.Scene
         //Setup the bg music
         this.bgMusic = this.sound.add('theme');
         this.bgMusic.setLoop(true);
+        this.bgMusic.setVolume(0.3);
         this.bgMusic.play();
  
         //create the player
@@ -112,8 +132,7 @@ export default class GameScene extends Phaser.Scene
         this.uiManager.create();
 
         this.backgroundLayer.setCollision([154]);
-        
-   
+
     }
 
     update(time, delta)
