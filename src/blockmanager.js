@@ -19,6 +19,7 @@ export default class BlockManager
     create()
     {
         this.blocks = [];
+        this.cagedEnemies = 0;
 
         this.scene.anims.create({
             key: 'wisp',
@@ -41,6 +42,8 @@ export default class BlockManager
                 this.blocks.push(new Block(this.scene, block));
             }
         });
+
+        this.specialActivated = false;
     }
 
     update(time)

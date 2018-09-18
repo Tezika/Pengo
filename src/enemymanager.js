@@ -58,6 +58,12 @@ export default class EnemyManager {
         this.enemies[0].destroying = true;
         this.hsv = Phaser.Display.Color.HSVColorWheel();
         this.enemies[0].sprite.tint = this.hsv[300].color;
+
+        this.enemySpawner = this.scene.time.addEvent({
+            delay: 5000,
+            callback: this.spawnEnemy.bind(this),
+            loop: true
+        })
     }
 
     add(tileX, tileY) {
@@ -95,14 +101,27 @@ export default class EnemyManager {
         if (this.scene.player != null) {
             this.enemies.forEach(enemy => {
                 if (enemy.sprite.x == obj1.x && enemy.sprite.y == obj1.y) {
-                    if (enemy.stunned) {
-                        enemy.sprite.anims.play('enemyDeath', true);
-                    }
-                    else {
-                        this.scene.player.die();
-                    }
+                    this.scene.player.die();
                 }
             });
+        }
+    }
+
+    spawnEnemy()
+    {
+        if(this.enemies.length < 20 && !this.scene.blockManager.specialActivated)
+        {
+            var rnd = Math.random();
+            if(rnd > .67)
+            {
+                this.enemies.push(new Enemy(this.scene, 2, 11));
+            }else if(rnd > .33)
+            {
+                this.enemies.push(new Enemy(this.scene, 22, 11));
+            }else
+            {
+                this.enemies.push(new Enemy(this.scene, 22, 2));
+            }
         }
     }
 }

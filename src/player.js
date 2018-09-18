@@ -2,6 +2,7 @@ import 'phaser';
 import './game.js'
 import { Direction } from './block.js';
 import { Constant } from './game.js';
+import Block from './block';
 
 export default class Player {
     constructor(scene, tileX, tileY) {
@@ -243,6 +244,17 @@ export default class Player {
                                 enemy.stunEnemy();
                             }
                         }
+
+                        var obj = this.scene.getObjAt(this.sprite.x, wall.y);
+                        if (obj instanceof Block) {
+                            if(obj.special || obj.cagedEnemy)
+                            {
+                                if (this.scene.isTileOpenAt(this.sprite.x - xmov, wall.y)) {
+                                    obj.sprite.x -= xmov;
+                                }
+                            }
+                        }
+
                         this.scene.tweens.timeline({
                             targets: wall,
                             ease: 'Linear',
@@ -277,6 +289,17 @@ export default class Player {
                                 enemy.stunEnemy();
                             }
                         }
+
+                        var obj = this.scene.getObjAt(wall.x, this.sprite.y);
+                        if (obj instanceof Block) {
+                            if(obj.special || obj.cagedEnemy)
+                            {
+                                if (this.scene.isTileOpenAt(wall.x, this.sprite.y - ymov)) {
+                                    obj.sprite.y -= ymov;
+                                }
+                            }
+                        }
+
                         this.scene.tweens.timeline({
                             targets: wall,
                             ease: 'Linear',

@@ -15,6 +15,7 @@ export default class WallManager {
 
     create() {
         this.wallSprites = [];
+        this.skulls = [];
         this.wallParty = false;
         this.wallInc = 0;
         this.partyModeTimer = 0;
@@ -47,6 +48,7 @@ export default class WallManager {
                 sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size / 2;
                 sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size / 2;
                 sprite.angle = (Math.random() * 360);
+                this.skulls.push(sprite);
             }
             if (block.properties.wall) {
                 block.index = 154;
@@ -74,25 +76,18 @@ export default class WallManager {
                 sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size / 2;
                 sprite.anims.play('torch', true);
             }
-            if (block.properties.cage) {
-                var sprite = this.scene.physics.add.sprite(0, 0, "enemyCage", 0);
-                sprite.name = "wall";
-                sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size / 2;
-                sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size / 2;
-                sprite.anims.play('enemyCage', true);
-            }
         });
     }
 
     update(time) {
         if (this.wallParty) {
-            if (time > this.partyModeTimer + this.partyDuration) {
+            /*if (time > this.partyModeTimer + this.partyDuration) {
                 this.wallParty = false;
                 this.endWallSpritesParty();
             }
-            else {
+            else {*/
                 this.wallSpritesParty();
-            }
+            //}
         }
         this.rotInc++;
     }
