@@ -68,6 +68,15 @@ export default class PortalManager {
                 angle: sprite.angle + 360,
                 loop: -1,
             });
+            this.scene.tweens.add({
+                targets: sprite,
+                ease: 'Linear',
+                duration: 200,
+                scaleX: 1.8,
+                scaleY: 1.8,
+                loop: 3,
+                yoyo: true
+            });         
             this.scene.map.getTileAtWorldXY(sprite.x, sprite.y).resetCollision();
             this.scene.map.getTileAtWorldXY(sprite.x, sprite.y).index = 1;
         });
