@@ -19,7 +19,9 @@ export default class BlockManager
     create()
     {
         this.blocks = [];
+        this.cagedEnemies = 0;
 
+        if(!this.scene.anims.get('wisp'))
         this.scene.anims.create({
             key: 'wisp',
             frames: this.scene.anims.generateFrameNumbers('wisp', { start: 0, end: 3 }),
@@ -27,6 +29,7 @@ export default class BlockManager
             repeat: -1
         });
 
+        if(!this.scene.anims.get('destroyBlock'))
         this.scene.anims.create({
             key: 'destroyBlock',
             frames: this.scene.anims.generateFrameNumbers('blockDestroy', { start: 0, end: 7 }),
@@ -41,6 +44,8 @@ export default class BlockManager
                 this.blocks.push(new Block(this.scene, block));
             }
         });
+
+        this.specialActivated = false;
     }
 
     update(time)

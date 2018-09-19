@@ -15,18 +15,21 @@ export default class WallManager {
 
     create() {
         this.wallSprites = [];
+        this.skulls = [];
         this.wallParty = false;
         this.wallInc = 0;
         this.partyModeTimer = 0;
-        this.partyDuration = 3000;
+        this.partyDuration = 5000;
         this.hsv = Phaser.Display.Color.HSVColorWheel();
 
+        if(!this.scene.anims.get('enemyCage'))
         this.scene.anims.create({
             key: 'enemyCage',
             frames: this.scene.anims.generateFrameNumbers('enemyCage', { start: 0, end: 1 }),
             frameRate: 1,
             repeat: -1
         });
+        if(!this.scene.anims.get('torch'))
         this.scene.anims.create({
             key: 'torch',
             frames: this.scene.anims.generateFrameNumbers('torch', { start: 0, end: 3 }),
@@ -47,6 +50,7 @@ export default class WallManager {
                 sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size / 2;
                 sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size / 2;
                 sprite.angle = (Math.random() * 360);
+                this.skulls.push(sprite);
             }
             if (block.properties.wall) {
                 block.index = 154;
@@ -74,14 +78,9 @@ export default class WallManager {
                 sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size / 2;
                 sprite.anims.play('torch', true);
             }
-            if (block.properties.cage) {
-                var sprite = this.scene.physics.add.sprite(0, 0, "enemyCage", 0);
-                sprite.name = "wall";
-                sprite.x = this.scene.map.tileToWorldX(block.x) + Constant.Tile_Size / 2;
-                sprite.y = this.scene.map.tileToWorldY(block.y) + Constant.Tile_Size / 2;
-                sprite.anims.play('enemyCage', true);
-            }
         });
+        
+        this.generateCages();
     }
 
     update(time) {
@@ -129,5 +128,28 @@ export default class WallManager {
                 block.sprite.anims.stopOnRepeat();
             }
         });
+        
+        this.scene.scene.start('level2',{cages: this.scene.portalManager.cagedCount});
+    }
+
+    generateCages()
+    {
+        var wallLen = this.skulls.length;
+        for(var i = 0; i < this.scene.cageCount; i++)
+        {
+            var rnd = Math.round(Math.random() * wallLen);
+            if(this.skulls[rnd].name == "cage")
+            {
+                rnd++;
+            }
+            if(rnd > wallLen)
+            {
+                rnd = 0;
+            }
+            this.skulls[rnd].angle = 0;
+            this.skulls[rnd].setTexture("enemyCage");
+            this.skulls[rnd].anims.play('enemyCage', true);
+            this.skulls[rnd].name = "cage";
+        }
     }
 }

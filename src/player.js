@@ -2,6 +2,7 @@ import 'phaser';
 import './game.js'
 import { Direction } from './block.js';
 import { Constant } from './game.js';
+import Block from './block';
 
 export default class Player {
     constructor(scene, tileX, tileY) {
@@ -27,14 +28,22 @@ export default class Player {
         this.slimeDuration = 2000;
         this.slimeActive = false;
 
+        this.tapped = false;
+        this.swipeDir = null;
+
         this.spaceBar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+        this.wallShakeSound = this.scene.sound.add('wallShake',{volume: 0});
+        this.deathSound = this.scene.sound.add('playerDeath', {volume: 0}); 
+
+        if(!this.scene.anims.get('downPlayer'))
         this.scene.anims.create({
             key: 'downPlayer',
             frames: this.scene.anims.generateFrameNumbers('downPlayer', { start: 0, end: 13 }),
             frameRate: 10,
             repeat: -1
         });
+        if(!this.scene.anims.get('sidePlayer'))
         this.scene.anims.create({
             key: 'sidePlayer',
             frames: this.scene.anims.generateFrameNumbers('sidePlayer', { start: 0, end: 12 }),
@@ -42,6 +51,7 @@ export default class Player {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('upPlayer'))
         this.scene.anims.create({
             key: 'upPlayer',
             frames: this.scene.anims.generateFrameNumbers('upPlayer', { start: 0, end: 12 }),
@@ -49,6 +59,7 @@ export default class Player {
             repeat: -1
         });
 
+        if(!this.scene.anims.get('deathPlayer'))
         this.scene.anims.create({
             key: 'deathPlayer',
             frames: this.scene.anims.generateFrameNumbers('deathPlayer', { start: 0, end: 13 }),
@@ -57,6 +68,9 @@ export default class Player {
 
         this.sprite.anims.play('downPlayer', true);
         this.sprite.on('animationcomplete', this.deathComplete, this);
+
+        this.scene.input.on("pointerup", this.endSwipe, this);
+        this.scene.input.on("pointerdown", this.tapPlayer, this);
     }
 
     update(time) {
@@ -99,6 +113,7 @@ export default class Player {
     }
 
     die() {
+        this.deathSound.play();
         this.sprite.anims.play('deathPlayer', true);
         this.lastMoveTime = Number.MAX_SAFE_INTEGER;
     }
@@ -118,29 +133,31 @@ export default class Player {
         var th = 0;
 
         if (time > this.lastMoveTime + this.moveDelay && this.canMove) {
-            if (this.cursors.down.isDown) {
+            if (this.cursors.down.isDown || this.swipeDir == Direction.Down) {
                 this.sprite.anims.play('downPlayer', true);
                 this.facing = Direction.Down;
                 this.sprite.flipX = false;
                 th = this.scene.tileHeight;
             }
-            else if (this.cursors.up.isDown) {
+            else if (this.cursors.up.isDown || this.swipeDir == Direction.Up) {
                 this.sprite.anims.play('upPlayer', true);
                 this.facing = Direction.Up;
                 this.sprite.flipX = false;
                 th = -this.scene.tileHeight;
-            } else if (this.cursors.left.isDown) {
+            } else if (this.cursors.left.isDown || this.swipeDir == Direction.Left) {
                 this.sprite.anims.play('sidePlayer', true);
                 this.sprite.flipX = false;
                 this.facing = Direction.Left;
                 tw = -this.scene.tileWidth;
             }
-            else if (this.cursors.right.isDown) {
+            else if (this.cursors.right.isDown || this.swipeDir == Direction.Right) {
                 this.sprite.anims.play('sidePlayer', true);
                 this.facing = Direction.Right;
                 this.sprite.flipX = true;
                 tw = this.scene.tileWidth;
             }
+
+            this.swipeDir = null;
 
             if (tw != 0 || th != 0) {
                 if (this.scene.isTileOpenAt(this.sprite.x + tw, this.sprite.y + th)) {
@@ -175,7 +192,7 @@ export default class Player {
         if (time > this.lastPushTime + repeatPushDelay) {
             var tw = this.scene.tileWidth;
             var th = this.scene.tileHeight;
-            if (this.spaceBar.isDown) {
+            if (this.spaceBar.isDown || this.tapped) {
                 var xmov = tw;
                 var ymov = th;
                 switch (this.facing) {
@@ -225,6 +242,7 @@ export default class Player {
     WallStunning(time, xmov, ymov) {
         var lookSpr = this.scene.getObjAt(this.sprite.x + xmov, this.sprite.y + ymov);
         if (lookSpr instanceof Phaser.GameObjects.Sprite && lookSpr.name == "wall") {
+            this.wallShakeSound.play();
             this.lastStunTime = time;
             this.scene.wallManager.wallSprites.forEach(wall => {
                 if (xmov != 0) {
@@ -236,6 +254,17 @@ export default class Player {
                                 enemy.stunEnemy();
                             }
                         }
+
+                        var obj = this.scene.getObjAt(this.sprite.x, wall.y);
+                        if (obj instanceof Block) {
+                            if(obj.special || obj.cagedEnemy)
+                            {
+                                if (this.scene.isTileOpenAt(this.sprite.x - xmov, wall.y)) {
+                                    obj.sprite.x -= xmov;
+                                }
+                            }
+                        }
+
                         this.scene.tweens.timeline({
                             targets: wall,
                             ease: 'Linear',
@@ -270,6 +299,17 @@ export default class Player {
                                 enemy.stunEnemy();
                             }
                         }
+
+                        var obj = this.scene.getObjAt(wall.x, this.sprite.y);
+                        if (obj instanceof Block) {
+                            if(obj.special || obj.cagedEnemy)
+                            {
+                                if (this.scene.isTileOpenAt(wall.x, this.sprite.y - ymov)) {
+                                    obj.sprite.y -= ymov;
+                                }
+                            }
+                        }
+
                         this.scene.tweens.timeline({
                             targets: wall,
                             ease: 'Linear',
@@ -297,6 +337,38 @@ export default class Player {
                     }
                 }
             });
+        }
+    }
+
+    endSwipe(e){
+        this.tapped = false;
+        var tw = 0;
+        var th = 0;
+
+        var swipeTime = e.upTime - e.downTime;
+        var swipe = new Phaser.Geom.Point(e.upX - e.downX, e.upY - e.downY);
+        var swipeMagnitude = Phaser.Geom.Point.GetMagnitude(swipe);
+        var swipeNormal = new Phaser.Geom.Point(swipe.x / swipeMagnitude, swipe.y / swipeMagnitude);
+        if(swipeMagnitude > 20 && swipeTime < 1000 && (Math.abs(swipeNormal.y) > 0.8 || Math.abs(swipeNormal.x) > 0.8)) {
+            if (swipeNormal.y > 0.8) {
+                this.swipeDir = Direction.Down;
+            }
+            else if (swipeNormal.y < -0.8) {
+                this.swipeDir = Direction.Up;
+            } else if (swipeNormal.x < -0.8) {
+                this.swipeDir = Direction.Left;
+            }
+            else if (swipeNormal.x > 0.8) {
+                this.swipeDir = Direction.Right;
+            }
+        }
+    }
+
+    tapPlayer(e){
+        if(e.downX > this.sprite.x - 32 && e.downX < this.sprite.x + 32 && e.downY > this.sprite.y - 32 && e.downY < this.sprite.y + 32)
+        {
+            this.tapped = true;
+            this.push(this.scene.time.now);
         }
     }
 }

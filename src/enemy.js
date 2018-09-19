@@ -35,6 +35,16 @@ export default class Enemy {
 
         this.sprite.anims.play('enemyDown', true);
         this.sprite.on('animationcomplete', this.deathComplete, this);
+
+        //Audio Stuff
+        this.dieSound = this.scene.sound.add('penguinExplode');
+
+        if(Math.random() > this.scene.enemyManager.purpleSpawnRate)
+        {
+            this.destroying = true;
+            this.hsv = Phaser.Display.Color.HSVColorWheel();
+            this.sprite.tint = this.hsv[300].color;
+        }
     }
 
     update(time) {
@@ -145,8 +155,14 @@ export default class Enemy {
     }
 
     destroy() {
+        this.dieSound.play();
         this.sprite.anims.play('enemyDeath', true);
         this.death = true;
+    }
+
+    destroyNoAnim() {
+        this.scene.enemyManager.remove(this);
+        this.sprite.destroy();
     }
 
     deathComplete(animation, frame) {

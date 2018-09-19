@@ -6,12 +6,14 @@ import WallManager from './wallmanager.js';
 import SlimeManager from './slimemanager.js';
 import ScoreManager from './scoremanager.js';
 import UIManager from './uimanager.js';
+import PortalManager from './portalmanager.js';
 
 export const Constant = 
 {
     Tile_Size: 64,
     Empty_Tile_Index: 132,
-    Player_Lifes: 3
+    Player_Lifes: 3,
+    Enemy_Count_OneScreen: 8
 }
 
 export default class GameScene extends Phaser.Scene
@@ -20,6 +22,19 @@ export default class GameScene extends Phaser.Scene
     {
         super();
         Phaser.Scene.call(this, { key: 'game' });
+        this.loadLevel = function()
+        {
+            this.map = this.make.tilemap({ key: 'map' });
+        }
+    }
+    
+    init(data)
+    {
+        this.cageCount = 0;
+        if(data.cages != undefined)
+        {
+            this.cageCount = data.cages;
+        }
     }
 
     preload()
@@ -27,13 +42,14 @@ export default class GameScene extends Phaser.Scene
         
         //load the tiles
         this.load.tilemapTiledJSON('map', 'assets/tilemap/pengo.json');
+        this.load.tilemapTiledJSON('map2', 'assets/tilemap/lvl2.json');
         this.load.image('tiles','assets/tilemap/snowWIP.png');
-        this.load.image('cage', 'assets/cage.png');
+        this.load.image('cage', 'assets/Cage.png');
         this.titlesetName = 'snowWIP';
 
         // Wall assets
         this.load.image('Skull','assets/Skull.png');
-        this.load.image('Skull Penguin','assets/Skull Penguin.png');
+        this.load.image('Skull Penguin','assets/Skullpenguin.png');
         this.load.image('fire','assets/fireEye.png');
         this.load.image('tar','assets/tar.png');
         this.load.image('livesBg', 'assets/livesBG.jpg');
@@ -41,6 +57,8 @@ export default class GameScene extends Phaser.Scene
         this.load.spritesheet('torch','assets/torch.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('blockDestroy','assets/blockDestroy.png', {frameWidth: 64, frameHeight: 64});
         this.load.image('background', 'assets/background_final.png');
+        this.load.image('portal', 'assets/Portal.png');
+        this.load.image('portalGrey', 'assets/Portal_Inactive.png');
       
         // Player animations
         this.load.spritesheet('sidePlayer','assets/sidePlayer.png', {frameWidth: 64, frameHeight: 64});
@@ -60,11 +78,35 @@ export default class GameScene extends Phaser.Scene
         //Font assets
         this.load.bitmapFont('upheaval', 'assets/fonts/upheaval.png', 'assets/fonts/upheaval.fnt');
 
+        //Audio assets
+        this.load.audio('theme', [
+            'assets/sfx/background.ogg'
+        ]);
+        this.load.audio('cageBreak', [
+            'assets/sfx/cageBreak.ogg'
+        ]);
+        this.load.audio('cageEntersPortal', [
+            'assets/sfx/cageEntersPortal.ogg'
+        ]);
+        this.load.audio('penguinExplode', [
+            'assets/sfx/penguinExplode.ogg'
+        ]);
+        this.load.audio('playerDeath', [
+            'assets/sfx/playerDeath.ogg'
+        ]);
+        this.load.audio('portalActive', [
+            'assets/sfx/portalActive.ogg'
+        ]);
+        this.load.audio('wallShake', [
+            'assets/sfx/wallShake.ogg'
+        ]);
+    
         this.blockManager = new BlockManager(this);
         this.enemyManager = new EnemyManager(this);
         this.wallManager = new WallManager(this);
         this.slimeManager = new SlimeManager(this);
         this.scoreManager = new ScoreManager(this);
+        this.portalManager = new PortalManager(this);
         this.uiManager = new UIManager(this, 800, 32);
     }
 
@@ -72,7 +114,8 @@ export default class GameScene extends Phaser.Scene
     {
         this.bg = this.add.tileSprite(800, 448, 1600, 896,'background');
 
-        this.map = this.make.tilemap({ key: 'map' });
+        this.loadLevel();
+
         // The first parameter is the name of the tileset in Tiled and the second parameter is the key
         // of the tileset image used when loading the file in preload.
         var tiles = this.map.addTilesetImage(this.titlesetName, 'tiles');
@@ -83,6 +126,10 @@ export default class GameScene extends Phaser.Scene
 
         this.tileWidth = this.map.tileWidth * this.backgroundLayer.scaleX;
         this.tileHeight = this.map.tileHeight * this.backgroundLayer.scaleY;
+
+        //Setup the bg music
+        this.bgMusic = this.sound.add('theme', {volume: 1, loop: true});
+        this.bgMusic.play();
  
         //create the player
         this.player = new Player(this, 2, 2);
@@ -102,7 +149,11 @@ export default class GameScene extends Phaser.Scene
         //UI setup
         this.uiManager.create();
 
+        //Portal setup
+        this.portalManager.create();
+
         this.backgroundLayer.setCollision([154]);
+
     }
 
     update(time, delta)
@@ -112,6 +163,7 @@ export default class GameScene extends Phaser.Scene
         this.wallManager.update(time);
         this.enemyManager.update(time);
         this.slimeManager.update(time);
+        this.portalManager.update(time);
     }
 
     isTileOpenAt (worldX, worldY)
