@@ -21,7 +21,7 @@ export default class StartScene extends Scene
         this.input.once('pointerdown', function (event) {
             this.scene.start('game');
         }, this);
-        // this.resize();
+        this.resize();
     }
 
     update()
@@ -29,24 +29,24 @@ export default class StartScene extends Scene
 
     }
 
-    // resize() {
-    //     var canvas = document.querySelector("canvas");
-    //     var windowWidth = window.innerWidth;
-    //     var windowHeight = window.innerHeight;
-    //     var windowRatio = windowWidth / windowHeight;
-    //     var gameRatio = this.game.config.width / this.game.config.height;
-    //     console.log(windowWidth + "   " + windowHeight);
-    //     if(windowRatio < gameRatio){
-    //         console.log("if");
-    //         canvas.style.width = windowWidth + "px";
-    //         canvas.style.height = (windowWidth / gameRatio) + "px";
-    //     }
-    //     else{
-    //         windowHeight -= 64;
-    //         console.log("else");
-    //         canvas.style.width = (windowHeight * gameRatio) + "px";
-    //         canvas.style.height = windowHeight + "px";
-    //     }
-    // }
+    resize() {
+        var canvas = document.querySelector("canvas");
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        var windowRatio = windowWidth / windowHeight;
+        var gameRatio = this.game.config.width / this.game.config.height;
+        console.log(windowWidth + "   " + windowHeight);
+        if(windowRatio < gameRatio){
+            console.log("if");
+            canvas.style.width = windowWidth + "px";
+            canvas.style.height = (windowWidth / gameRatio) + "px";
+        }
+        else{
+            windowHeight -= 64;
+            console.log("else");
+            canvas.style.width = (windowHeight * gameRatio) + "px";
+            canvas.style.height = windowHeight + "px";
+        }
+    }
 
 }

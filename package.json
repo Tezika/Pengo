@@ -36,7 +36,7 @@
     "phaser": "^3.3.0"
   },
   "deprecated": false,
-  "description": "A Phaser 3 Project Template",
+  "description": "A puzzle pixel art game :)",
   "devDependencies": {
     "raw-loader": "^0.5.1",
     "webpack": "^3.4.1",
