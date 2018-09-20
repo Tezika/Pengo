@@ -70,7 +70,7 @@ export default class EnemyManager {
             loop: true
         })
 
-        this.purpleSpawnRate = .87;
+        this.purpleSpawnRate = .8;
     }
 
     add(tileX, tileY) {
