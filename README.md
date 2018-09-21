@@ -1,4 +1,4 @@
-#Pengon
+# Pengon
 
 ## Introduction
 
@@ -12,7 +12,7 @@
 
 We need [Node.js](https://nodejs.org) to install and run scripts.
 
-###Install and run
+### Install and run
 
 Run next commands in your terminal:
 
