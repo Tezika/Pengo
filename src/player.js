@@ -237,6 +237,11 @@ export default class Player {
                 this.lastPushTime = time;
             }
         }
+
+        if (this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO).isDown)
+        {
+            this.scene.scene.start('level2',{cages: this.scene.portalManager.cagedCount});
+        }
     }
 
     WallStunning(time, xmov, ymov) {
@@ -342,8 +347,6 @@ export default class Player {
 
     endSwipe(e){
         this.tapped = false;
-        var tw = 0;
-        var th = 0;
 
         var swipeTime = e.upTime - e.downTime;
         var swipe = new Phaser.Geom.Point(e.upX - e.downX, e.upY - e.downY);
